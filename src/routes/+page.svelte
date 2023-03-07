@@ -38,6 +38,7 @@
 	//navigates to +page.svelte in login folder
 	function loginPage() {
 		navigate('/login');
+		window.location.reload();
 	}
 
 	async function loadStudent() {

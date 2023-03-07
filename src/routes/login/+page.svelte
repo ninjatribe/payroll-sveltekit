@@ -1,3 +1,9 @@
+<script>
+	import { onMount } from 'svelte';
+
+	let password = '';
+</script>
+
 <!-- Jumbotron for More Info -->
 <div
 	class="relative overflow-hidden rounded-lg bg-cover bg-no-repeat p-12 text-center translate-y-50 animate-slide-down"
@@ -51,6 +57,7 @@
 				<input
 					type="password"
 					id="password"
+					bind:value={password}
 					name="password"
 					class="w-full rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base"
 				/>
