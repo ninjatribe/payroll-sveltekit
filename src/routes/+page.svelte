@@ -1,6 +1,7 @@
 <script>
 	// @ts-nocheck
 	import { onMount } from 'svelte';
+	import { navigate } from 'svelte-routing'; //Imported navigate in conjunstion with Router and Route from App.svelte
 	import dateToString from '$lib/utils/dateHelper';
 	import { paginate, LightPaginationNav } from 'svelte-paginate';
 	import AddStudentForm from '$lib/components/forms/AddStudentForm.svelte';
@@ -33,6 +34,12 @@
 	onMount(async () => {
 		loadStudent();
 	});
+
+	//navigates to +page.svelte in login folder
+	function loginPage() {
+		navigate('/login');
+		window.location.reload();
+	}
 
 	async function loadStudent() {
 		try {
@@ -78,6 +85,11 @@
 
 <div class="container mt-12">
 	<div class="flex mb-4">
+		<button
+			type="button"
+			class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mx-2"
+			on:click={loginPage}>Login</button
+		>
 		<button
 			type="button"
 			class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mx-2"
