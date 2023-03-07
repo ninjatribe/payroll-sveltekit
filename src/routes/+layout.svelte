@@ -1,5 +1,6 @@
 <script>
 	import '../app.css';
+  import Nav from '../lib/components/+navBar.svelte'
 </script>
 
 <svelte:head>
@@ -9,5 +10,6 @@
 	/>
 </svelte:head>
 <main id="content" class="min-h-[100vh] w-screen max-w-screen">
+  <Nav/>
 	<slot />
 </main>
