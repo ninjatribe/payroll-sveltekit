@@ -54,7 +54,7 @@
                     </thead>
                 </table>
             </div>
-            <div class = "grid grid-cols-3 w-full h-40 my-10 mx-1">
+            <div class = "grid grid-cols-3 w-full h-40 my-5 mx-1">
                 <!-- Employee Tracker-->
                 <div class = "bg-blue-500 m-1 shadow-sm shadow-cyan-100">
                     <h1 class = "text-s font-mono text-white p-3">Employee list</h1>
@@ -77,8 +77,21 @@
                 </div>
             </div>
             <!-- Transactions bar in progress-->
-            <div class = "w-full">
-
+            <div class = "grid grid-cols-3 w-full h-40 mx-1">
+                <div class = "w-full bg-blue-500 shadow-sm shadow-cyan-100">
+                    <h1 class = "text-s font-mono text-white p-3">Transactions</h1>
+                    <table class = "w-full bg-slate-100 border-b-2 border-black">
+                        <thead>
+                        <tr>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left">Transaction</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left">Date & Time</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left">Ammount</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left">Currency</th>
+                            <th class="p-3 text-sm font-semibold tracking-wide text-left">Status</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
