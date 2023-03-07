@@ -4,6 +4,7 @@
 	import dateToString from '$lib/utils/dateHelper';
 	import { paginate, LightPaginationNav } from 'svelte-paginate';
 	import AddStudentForm from '$lib/components/forms/AddStudentForm.svelte';
+	import Dashboard from '../lib/components/forms/Dashboard.svelte';
 
 	let search;
 	let items = [];
@@ -76,6 +77,8 @@
 	};
 </script>
 
+<Dashboard />
+
 <div class="container mt-12">
 	<div class="flex mb-4">
 		<button
@@ -136,6 +139,7 @@
 		{/if}
 	{/key}
 </div>
+
 
 {#if isModalOpen}
 	<AddStudentForm title={'Add Student'} bind:isModalOpen {loadStudent} />
