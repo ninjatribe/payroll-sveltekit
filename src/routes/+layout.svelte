@@ -1,5 +1,13 @@
 <script>
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 	import '../app.css';
+
+	$: {
+		if (!$page.data.user) {
+			goto('/auth/login');
+		}
+	}
 </script>
 
 <svelte:head>
