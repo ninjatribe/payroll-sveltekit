@@ -4,9 +4,9 @@
 	import dateToString from '$lib/utils/dateHelper';
 	import { paginate, LightPaginationNav } from 'svelte-paginate';
 	import AddStudentForm from '$lib/components/forms/AddStudentForm.svelte';
+	import Dashboard from '../lib/components/forms/Dashboard.svelte';
 	import Nav from '../lib/components/+navbar.svelte'
 	import Sidebar from '$lib/components/Sidebar.svelte';
-	import Dashboard from '../lib/components/forms/Dashboard.svelte';
 
 	let search;
 	let items = [];
@@ -78,8 +78,8 @@
 	};
 </script>
 
-<Nav/>
 <Dashboard/>
+<Nav/>
 {#if Sidebar}
 <Sidebar/>
 {/if}
