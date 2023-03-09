@@ -1,6 +1,13 @@
 <script>
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 	import '../app.css';
-  import Nav from '../lib/components/+navBar.svelte'
+
+	$: {
+		if (!$page.data.user) {
+			goto('/auth/login');
+		}
+	}
 </script>
 
 <svelte:head>
@@ -10,6 +17,5 @@
 	/>
 </svelte:head>
 <main id="content" class="min-h-[100vh] w-screen max-w-screen">
-  <Nav/>
 	<slot />
 </main>
