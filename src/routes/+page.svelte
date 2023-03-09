@@ -4,6 +4,7 @@
 	import dateToString from '$lib/utils/dateHelper';
 	import { paginate, LightPaginationNav } from 'svelte-paginate';
 	import AddStudentForm from '$lib/components/forms/AddStudentForm.svelte';
+	import Nav from '../lib/components/+navbar.svelte'
 
 	let search;
 	let items = [];
@@ -74,6 +75,8 @@
 		isModalOpen = true;
 	};
 </script>
+
+<Nav/>
 
 <div class="container mt-12">
 	<div class="flex mb-4">
