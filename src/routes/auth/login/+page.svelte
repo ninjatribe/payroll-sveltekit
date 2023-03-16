@@ -2,9 +2,9 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { SHA256 } from 'crypto-js';
-	
+
 	export let data;
-	const {user} = data;
+	const { user } = data;
 
 	let email = '';
 	let password = '';
@@ -18,7 +18,7 @@
 			setTimeout(() => {
 				hasAccess = false;
 			}, 500);
-			goto('/auth/login')
+			goto('/auth/login');
 		}
 	}
 
@@ -27,13 +27,13 @@
 		const response = await fetch('/api/auth/login', {
 			method: 'POST',
 			headers: {
-				'content-type': 'application/json',
+				'content-type': 'application/json'
 			},
-			body: JSON.stringify({ email, password: securePassword}),
+			body: JSON.stringify({ email, password: securePassword })
 		});
 		const data = await response.json();
 
-		if(data.error) {
+		if (data.error) {
 			error = data.errorMessage || 'An error occured';
 			loggingIn = false;
 		} else {
@@ -48,18 +48,16 @@
 						photo: data.user.profile.photo,
 						country: data.user.profile.country,
 						province: data.user.profile.province,
-						displayName: data.user.profile.displayName,
+						displayName: data.user.profile.displayName
 					},
-					email: data.user.profile.email,
+					email: data.user.profile.email
 				};
 			});
-			goto('/')
+			goto('/');
 		}
-	}
-
+	};
 </script>
 
-<!-- Jumbotron for More Info -->
 <div class="relative overflow-hidden h-52 text-center translate-y-50 animate-slide-down">
 	<div
 		class="absolute top-0 right-0 bottom-0 left-0 h-full w-full overflow-hidden bg-fixed"
@@ -77,7 +75,7 @@
 					rel="noreferrer"
 				>
 					Learn More
-			</a>
+				</a>
 			</div>
 		</div>
 	</div>
@@ -85,23 +83,29 @@
 
 <section class="text-gray-600 body-font">
 	<div class="container px-5 py-24 mx-auto flex flex-wrap items-center">
-		<!-- Text Description/Info -->
 		<div class="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0 translate-x-full animate-fade-in-left">
 			<h1 class="title-font font-bold text-5xl text-gray-900">Payroll System</h1>
-			<p class="leading-relaxed mt-4 text-sm">A payroll system is a software application used by businesses to manage employee compensation, including wages, salaries, bonuses, and deductions. The system typically includes modules for managing employee information, calculating payroll taxes, generating paychecks or electronic payments, and reporting on payroll data.</p>
+			<p class="leading-relaxed mt-4 text-sm">
+				A payroll system is a software application used by businesses to manage employee
+				compensation, including wages, salaries, bonuses, and deductions. The system typically
+				includes modules for managing employee information, calculating payroll taxes, generating
+				paychecks or electronic payments, and reporting on payroll data.
+			</p>
 		</div>
-		<!-- Login form -->
+
 		<div
 			class="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 translate-x-full animate-fade-in-right"
 		>
-			<form method="POST" autocomplete="off"
-			on:submit={(e) => {
-				e.preventDefault();
-				if(!loggingIn) {
-					loggingIn = true;
-					handleLogin();
-				}
-			}}
+			<form
+				method="POST"
+				autocomplete="off"
+				on:submit={(e) => {
+					e.preventDefault();
+					if (!loggingIn) {
+						loggingIn = true;
+						handleLogin();
+					}
+				}}
 			>
 				<div class="relative mb-4">
 					<label for="email" class="leading-7 text-sm text-gray-600">Email</label>
@@ -128,13 +132,14 @@
 					>Login</button
 				>
 				<div class="text-custom-red h-1">{error}</div>
-				<p class="text-xs text-gray-500 mt-3">Forgot password? Contact administrator for a reset.</p>
+				<p class="text-xs text-gray-500 mt-3">
+					Forgot password? Contact administrator for a reset.
+				</p>
 			</form>
 		</div>
 	</div>
 </section>
 
-<!-- Footer with name and addional source of info.-->
 <footer
 	class="fixed bottom-0 left-0 z-20 w-full p-4 bg-white border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 dark:border-gray-600"
 >
@@ -158,7 +163,6 @@
 	</ul>
 </footer>
 
-<!-- Keyframes for the div animations -->
 <style>
 	@keyframes fade-in-left {
 		0% {
