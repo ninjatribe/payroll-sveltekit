@@ -11,7 +11,7 @@
 
     async function loaduserData() {
         try{
-            let response = await fetch ('/api/admin/user',{
+            let response = await fetch ('/api/admin/users',{
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
