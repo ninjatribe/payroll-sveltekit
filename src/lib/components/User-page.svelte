@@ -2,6 +2,7 @@
     // @ts-nocheck
 	import { onMount } from "svelte";
     import dateToString from '$lib/utils/dateHelper';
+	import Sidebar from "./Sidebar.svelte";
 
 
 
@@ -31,6 +32,9 @@
 {#if showUserPage}
 
 <div class = "flex">
+    {#if Sidebar}
+    <Sidebar/>
+    {/if}
     <div class = "bg-slate-600 grow">
         <div class = "w-32 Justfiy-center text-white font-serif text-6xl bg-transparent p-4">Employee Page</div>
         <!--Table div-->
