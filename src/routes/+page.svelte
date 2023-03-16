@@ -3,9 +3,10 @@
 	import { onMount } from 'svelte';
 	import dateToString from '$lib/utils/dateHelper';
 	import { paginate, LightPaginationNav } from 'svelte-paginate';
+	import AddUserForm from '$lib/components/forms/AddUserForm.svelte';
 	import AddStudentForm from '$lib/components/forms/AddStudentForm.svelte';
 	import Dashboard from '../lib/components/forms/Dashboard.svelte';
-	import Navbar from '$lib/components/Navbar.svelte'
+	import Navbar from '$lib/components/Navbar.svelte';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 
 	let search;
@@ -15,6 +16,7 @@
 	let itemSize;
 	let paginatedItems = [];
 	let isModalOpen = false;
+	let isModal2Open = false;
 
 	$: {
 		// reactive statement to automatically filter data
@@ -35,7 +37,24 @@
 	// fetch student data using  api
 	onMount(async () => {
 		loadStudent();
+		// loadUser();
 	});
+
+	// For loading the modal
+	async function loadUser() {
+		try {
+			let response = await fetch('/api/admin/user', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			let result = await response.json();
+			items = result.response;
+		} catch (error) {
+			console.error('error', error);
+		}
+	}
 
 	async function loadStudent() {
 		try {
@@ -76,19 +95,29 @@
 	const handleOpenModal = () => {
 		isModalOpen = true;
 	};
+
+	const handleOpenModal2 = () => {
+		isModal2Open = true;
+		console.log(isModal2Open);
+	};
 </script>
 
-<Navbar/>
-<Sidebar/>
+<Navbar />
+<Sidebar />
 <!-- commented out dashboard to temporarily disable and reduce clutter in this page -->
 <!-- <Dashboard/> -->
 <div class="p-4 sm:ml-64">
 	<div class="container mt-12">
 		<div class="flex mb-4">
 			<button
-			  type="button"
-			  class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mx-2"
+				type="button"
+				class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mx-2"
 				on:click={handleOpenModal}>Add</button
+			>
+			<button
+				type="button"
+				class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mx-2"
+				on:click={handleOpenModal2}>Add</button
 			>
 			<button
 				class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-2"
@@ -144,7 +173,10 @@
 	</div>
 </div>
 
-
 {#if isModalOpen}
 	<AddStudentForm title={'Add Student'} bind:isModalOpen {loadStudent} />
+{/if}
+
+{#if isModal2Open}
+	<AddUserForm title={'Add User'} bind:isModal2Open {loadUser} />
 {/if}
