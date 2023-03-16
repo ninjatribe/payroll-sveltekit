@@ -4,8 +4,8 @@
 	import dateToString from '$lib/utils/dateHelper';
 	import { paginate, LightPaginationNav } from 'svelte-paginate';
 	import AddStudentForm from '$lib/components/forms/AddStudentForm.svelte';
-	import Dashboard from '../lib/components/Dashboard.svelte';
-	import Nav from '../lib/components/+navbar.svelte'
+	import Dashboard from '../lib/components/forms/Dashboard.svelte';
+	import Navbar from '$lib/components/Navbar.svelte'
 	import Sidebar from '$lib/components/Sidebar.svelte';
 
 	let search;
@@ -78,19 +78,16 @@
 	};
 </script>
 
-<Dashboard/>
-<Nav/>
-{#if Sidebar}
+<Navbar/>
 <Sidebar/>
-{/if}
-			
+<!-- commented out dashboard to temporarily disable and reduce clutter in this page -->
+<!-- <Dashboard/> -->
 <div class="p-4 sm:ml-64">
-	
 	<div class="container mt-12">
 		<div class="flex mb-4">
 			<button
-				type="button"
-				class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mx-2"
+			  type="button"
+			  class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mx-2"
 				on:click={handleOpenModal}>Add</button
 			>
 			<button
@@ -137,7 +134,6 @@
 				<LightPaginationNav
 					totalItems={itemSize}
 					{pageSize}
-					,
 					{currentPage}
 					limit={1}
 					showStepOptions={true}
