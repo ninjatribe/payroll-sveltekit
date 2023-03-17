@@ -3,13 +3,23 @@
 	import {page} from '$app/stores';
 	import {goto} from '$app/navigation';
   
-  const profile = $page.data.user.profile;  
-  const fullName = profile.displayName;
-  const imgsrc = profile.photo.url;
+  let fullName = '';
+  let imgsrc = '';
   
   let isAccountProfileOpen = false;
   let isDropdownOpen = false;
-  let isLogout = false; 
+
+  $: {
+    // ------------ 
+    // Checks if user exist data
+    //WARNING: if this is removed. Logout will not redirect to auth/login
+    if($page.data.user !== undefined)
+    {
+      fullName = $page.data.user.profile.displayName;
+      imgsrc = $page.data.user.profile.photo.url;
+    }
+    // ------------
+  }
 
   function handleToggleDropDown()
   {
@@ -24,7 +34,7 @@
 
   function handleLogout()
   {
-    goto('auth/login/');
+    goto('auth/logout');
   }
 </script>
 
