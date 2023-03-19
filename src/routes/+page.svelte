@@ -102,11 +102,9 @@
 	};
 </script>
 
-<Navbar />
-<Sidebar />
 <!-- commented out dashboard to temporarily disable and reduce clutter in this page -->
 <!-- <Dashboard/> -->
-<div class="p-4 sm:ml-64">
+<div class="p-4">
 	<div class="container mt-12">
 		<div class="flex mb-4">
 			<button
