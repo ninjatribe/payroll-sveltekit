@@ -1,6 +1,6 @@
 <script>
-	// @ts-nocheck
-	import HyperLink from './reusable/HyperLink.svelte';
+	// @ts-ignore
+	import HyperLink from '$lib/components/reusable/HyperLink.svelte';
 </script>
 
 <aside
@@ -10,7 +10,7 @@
 >
 	{#if HyperLink}
 		<HyperLink
-			href="#"
+			href="/"
 			buttonName="Dashboard"
 			img="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"
 		/>
@@ -23,6 +23,11 @@
 			href="/users"
 			buttonName="Users"
 			img="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+		/>
+		<HyperLink
+			href="/divisions"
+			buttonName="Divisions"
+			img="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"
 		/>
 		<HyperLink
 			href="#"
