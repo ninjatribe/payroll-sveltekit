@@ -102,8 +102,7 @@
 	};
 </script>
 
-<!-- commented out dashboard to temporarily disable and reduce clutter in this page -->
-<!-- <Dashboard/> -->
+<Dashboard/>
 <div class="p-4">
 	<div class="container mt-12">
 		<div class="flex mb-4">
