@@ -1,40 +1,64 @@
 <script>
     // @ts-nocheck
-    import Button from "../reusable/Button.svelte";
+    import Button from "$lib/components/reusable/Button.svelte";
+    import { onMount } from "svelte";
 
-    export let isAddModalOpen = false;
-    export let loadDivision = () => {};
+    export let isEditModalOpen = false;
+    export let currentGender;
+    export let loadGender = () => {};
 
-    let code = '';
+    let _id = '';
+    let name = '';
     let description = '';
 
-    const handleCloseModal = () => isAddModalOpen = false;
+    function setEditValues()
+    {
+        if(currentGender === undefined)
+        {
+            currentGender = [
+                {_id:"NA"},
+                {name:"NA"},
+                {description:"NA"}
+            ]
+        }
+        _id = currentGender._id;
+        name = currentGender.name;
+        description = currentGender.description;
 
+    }
+
+    const handleCloseModal = () => isEditModalOpen = false;
 
     async function handleSubmit(event)
     {
+        console.log(gender);
+        console.log(description);
 		event?.preventDefault();
-		const response = await fetch('/api/admin/division/insert', {
+		const response = await fetch('/api/admin/gender/update', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				code,
-				description,
+                _id,
+				gender,
+                description
 			})
 		});
 		let result = await response.json();
-		isAddModalOpen = false;
+		isEditModalOpen = false;
 		if (result.status === 'Success') {
-            console.log("Success");
-            loadDivision();
+            loadGender();
 		}
     }
 
+    onMount(() => {
+        setEditValues();
+    });
+
 </script>
 
-<div class="fixed z-10 inset-0 overflow-y-auto {isAddModalOpen? 'block': 'hidden'}">
+<div class="fixed z-10 inset-0 overflow-y-auto {isEditModalOpen? 'block': 'hidden'}">
 	<div class="flex items-center justify-center min-h-screen">
 		<div class="fixed inset-0 bg-gray-800 bg-opacity-25" />
         <div 
@@ -51,24 +75,24 @@
                     </button>
                     <div class="px-6 py-6 lg:px-8"> 
                         <div class="flex justify-center items-start">
-                            <h3 class="mb-4 text-m uppercase font-semibold text-gray-900 dark:text-white">Add New Division</h3>
+                            <h3 class="mb-4 text-m uppercase font-semibold text-gray-900 dark:text-white">Edit Gender</h3>
                         </div>
-                        <form class="space-y-6" on:submit={handleSubmit}>
+                        <form class="space-gender-6" on:submit={handleSubmit}>
                             <div>
-                                <label for="text" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Code</label>
+                                <label for="text" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender</label>
                                 <input 
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" 
+                                    class="mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" 
                                     type="text" 
-                                    name="code" 
-                                    id="code"
-                                    bind:value={code} 
+                                    name="gender" 
+                                    id="gender"
+                                    bind:value={name} 
                                     required
                                 >
                             </div>
                             <div>
                                 <label for="text" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                                 <textarea 
-                                    class="block resize-none p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    class="mb-4 block resize-none p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     type="text"
                                     id="description"
                                     name="description" 
@@ -86,8 +110,11 @@
                                     bgColor="bg-blue-700" 
                                     bgColorHover="bg-blue-800"
                                     >
-                                    <svg class="w-5 h-5 mr-1 dark:text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path></svg>
-                                    Add
+                                    <svg class="w-5 h-5 mr-2 dark:text-gray-400" fill="currentColor" viewBox="0 0 24 24"aria-hidden="true">
+                                        <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z"></path>
+                                        <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z"></path>
+                                    </svg>
+                                    Edit
                                 </Button>
                                 <Button 
                                     extraClasses="col-start-4 mx-1 pr-2 pl-2 pt-2 pb-2 inline-flex items-center text-center font-semibold rounded-lg" 
