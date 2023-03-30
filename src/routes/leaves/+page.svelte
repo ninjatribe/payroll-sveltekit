@@ -47,8 +47,8 @@
 			itemSize = paginatedItems.length;
 			paginatedItems = paginate({ items: paginatedItems, pageSize, currentPage });
 		}
-      pageMinIndex = 1 + ((currentPage - 1) * pageSize);
-      pageMaxIndex = (pageSize * currentPage > itemSize) ? itemSize : pageSize * currentPage;
+      pageMinIndex = (paginatedItems.length == 0)? 0 : 1 + ((currentPage - 1) * pageSize);
+      pageMaxIndex = (pageSize * currentPage > itemSize) ? paginatedItems.length : pageSize * currentPage;
    }
 
    const handleleaveformnModal = () => isLeaveFormOpen = !isLeaveFormOpen;
@@ -176,7 +176,7 @@
                   </th>
                   <th scope="col" class="pl-6 py-3 flex">
                      GROUP TYPE
-                     <button type="button" class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" on:click={() => handleSort('description')}>
+                     <button type="button" class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" on:click={() => handleSort('grouptype')}>
                         <svg fill="currentColor" class="w-5 h-5 dark:text-gray-400" viewBox="0 0 24 24" aria-hidden="true">
                            <path clip-rule="evenodd" fill-rule="evenodd" d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"></path>
                          </svg>
@@ -184,7 +184,7 @@
                   </th>
                   <th scope="col" class="pl-6 py-3 flex">
                      DATE TYPE
-                     <button type="button" class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" on:click={() => handleSort('description')}>
+                     <button type="button" class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" on:click={() => handleSort('datetype')}>
                         <svg fill="currentColor" class="w-5 h-5 dark:text-gray-400" viewBox="0 0 24 24" aria-hidden="true">
                            <path clip-rule="evenodd" fill-rule="evenodd" d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"></path>
                          </svg>
@@ -192,7 +192,7 @@
                   </th>
                   <th scope="col" class="pl-6 py-3 flex">
                      MAX DAYS
-                     <button type="button" class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" on:click={() => handleSort('description')}>
+                     <button type="button" class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" on:click={() => handleSort('maxday')}>
                         <svg fill="currentColor" class="w-5 h-5 dark:text-gray-400" viewBox="0 0 24 24" aria-hidden="true">
                            <path clip-rule="evenodd" fill-rule="evenodd" d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"></path>
                          </svg>
@@ -246,7 +246,7 @@
                               <div class="text-sm text-gray-700 font-medium">{leave.isActive? 'Active' : 'Inactive'}</div>
                            </div>
                         </td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 col-span-2">
                            <Button 
                               extraClasses="mx-1 pr-2 pl-4 inline-flex items-center text-center font-semibold rounded-lg" 
                               textSize="text-m" 
@@ -301,12 +301,12 @@
 </div>
 
 {#if isLeaveFormOpen}
-   <AddLeaveForm title={'Apply Leeave'} bind:isLeaveFormOpen {loadLeave}/>
+   <AddLeaveForm title={'Apply Leave'} bind:isLeaveFormOpen {loadLeave}/>
 {/if}
 
 {#if currentLeaveExist}
    {#if isEditLeaveOpen}
-      <EditLeaveForm title={'Apply Leeave'} bind:isEditLeaveOpen bind:currentLeave {loadLeave}/>
+      <EditLeaveForm title={'Apply Leave'} bind:isEditLeaveOpen bind:currentLeave {loadLeave}/>
    {/if}
    {#if isDeleteDataOpen}
       <ConfirmDeleteLeave bind:isDeleteDataOpen bind:currentLeave {loadLeave}/>

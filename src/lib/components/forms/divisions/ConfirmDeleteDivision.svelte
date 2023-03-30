@@ -1,6 +1,6 @@
 <script>
     // @ts-nocheck
-    import Button from "../reusable/Button.svelte";
+    import Button from "$lib/components/reusable/Button.svelte";
 
     export let isConfirmModalOpen = false;
     export let currentDivision;

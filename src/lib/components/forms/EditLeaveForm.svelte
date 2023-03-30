@@ -25,6 +25,10 @@
         }
         code = currentLeave.code;
         description = currentLeave.description;
+		grouptype = currentLeave.grouptype;
+		datetype = currentLeave.datetype;
+		maxday = currentLeave.maxday;
+		dbfiling = currentLeave.dbfiling;
 
     }
 
@@ -158,7 +162,7 @@
 						</div>
 
 						<div class="mb-4">
-							<label for="DbFiling" class="block mb-2 font-bold text-gray-700">Date Befor Filing:</label>
+							<label for="DbFiling" class="block mb-2 font-bold text-gray-700">Date Before Filing:</label>
 							<input
 								type="date"
 								id="DbFiling"

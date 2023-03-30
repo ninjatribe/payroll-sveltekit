@@ -1,10 +1,10 @@
 <script>
-	// @ts-nocheck
+   //@ts-nocheck
    import {onMount} from 'svelte';
    import {paginate} from 'svelte-paginate';
-   import AddDivisionForm from "$lib/components/forms/divisions/AddDivisionForm.svelte";
-   import EditDivisionForm from "$lib/components/forms/divisions/EditDivisionForm.svelte";
-   import ConfirmDeleteDivision from '$lib/components/forms/divisions/ConfirmDeleteDivision.svelte';
+   import AddGenderForm from "$lib/components/forms/genders/AddGenderForm.svelte";
+   import EditGenderForm from "$lib/components/forms/genders/EditGenderForm.svelte";
+   import ConfirmDeleteGender from '$lib/components/forms/genders/ConfirmDeleteGender.svelte';
    import Button from "$lib/components/reusable/Button.svelte";
 
    let status = "all";
@@ -17,7 +17,7 @@
 	let pageSize = 10;
 	let itemSize;
 	let paginatedItems = [];
-   let currentDivision;
+   let currentGender;
    let pageMinIndex = 1;
    let pageMaxIndex = pageSize;
    let sortOrder = 'asc';
@@ -28,15 +28,15 @@
       if(pageSize < 1) pageSize = 1;
 		// reactive statement to automatically filter data based on status.
       paginatedItems = search
-			? items.filter((division) => {
+			? items.filter((gender) => {
             return (status !== "all") 
-               ? (division.code.match(RegExp(search, 'gi')) || division.description.match(RegExp(search, 'gi'))) && 
-                  division.isActive === (status === 'active')
-               : division.code.match(RegExp(search, 'gi')) || division.description.match(RegExp(search, 'gi'));
+               ? (gender.name.match(RegExp(search, 'gi')) || gender.description.match(RegExp(search, 'gi'))) && 
+                  gender.isActive === (status === 'active')
+               : gender.name.match(RegExp(search, 'gi')) || gender.description.match(RegExp(search, 'gi'));
 			  })
-			: items.filter((division) => {
+			: items.filter((gender) => {
             return (status !== "all") 
-               ? division.isActive === (status === 'active') 
+               ? gender.isActive === (status === 'active') 
                : items;
          });
 		if (paginatedItems.length) {
@@ -44,18 +44,18 @@
 			paginatedItems = paginate({ items: paginatedItems, pageSize, currentPage });
 		}
       pageMinIndex = (paginatedItems.length == 0)? 0 : 1 + ((currentPage - 1) * pageSize);
-      pageMaxIndex = (pageSize * currentPage > itemSize) ? paginatedItems.length : pageSize * currentPage;
+      pageMaxIndex = (pageSize * currentPage > paginatedItems.length) ? paginatedItems.length : pageSize * currentPage;
    }
 
-   const handleAddDivisionModal = () => isAddModalOpen = !isAddModalOpen;
-   const handleEditDivisionModal = () => isEditModalOpen = !isEditModalOpen;
+   const handleAddGenderModal = () => isAddModalOpen = !isAddModalOpen;
+   const handleEditGenderModal = () => isEditModalOpen = !isEditModalOpen;
    const handleConfirmDeleteModal = () => isConfirmModalOpen = !isConfirmModalOpen;
    const handleOverFlow = () => {if(pageMinIndex > itemSize) currentPage = 1} 
    const decrementPageNumber = () => { if(currentPage > 1 ) currentPage -= 1}
    const incrementPageNumber = () => { if(pageMaxIndex < itemSize) currentPage += 1}
 
 
-   function currentDivisionExist()
+   function currentGenderExist()
    {
       if(currentDivision === undefined || !items.includes(currentDivision)){
          log.error("Selected division does not exist in items fetch from database!");
@@ -67,9 +67,9 @@
       return true;
    }
 
-	async function loadDivision() {
+	async function loadGender() {
 		try {
-			let response = await fetch('/api/admin/division', {
+			let response = await fetch('/api/admin/gender', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json'
@@ -104,7 +104,7 @@
    }
 
    onMount (async()=> {
-      loadDivision();
+      loadGender();
    });
 </script>
 
@@ -112,8 +112,8 @@
 <div class="border-2 border-gray-100 rounded-lg h-auto dark:border-gray-700 mt-12">
    <div class="flex flex-col justify-center border-b h-fit rounded bg-gray-300 dark:bg-gray-800">
       <div class="flex flex-col px-5 justify-center py-4">
-         <span class="text-xl font-semibold dark:text-white text-gray-900 " >Divisions</span>
-         <span class="text-m text-gray-600 dark:text-gray-400">Manage Divisions</span>
+         <span class="text-xl font-semibold dark:text-white text-gray-900 " >Genders</span>
+         <span class="text-m text-gray-600 dark:text-gray-400">Manage Genders</span>
       </div>
       <div class="flex gap-4 h-auto px-5 py-5 bg-white dark:bg-gray-800">
          <div class="flex flex-col w-full h-auto ">
@@ -130,7 +130,7 @@
                      textColor="text-white"
                      bgColor="bg-blue-700"
                      bgColorHover="bg-blue-800"
-                     on:click={handleAddDivisionModal}
+                     on:click={handleAddGenderModal}
                      ><svg fill="none" class="w-5 h-5 dark:text-gray-400"  stroke="currentColor" stroke-width="3.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path></svg>
                   </Button>
                </div>
@@ -154,13 +154,12 @@
          <thead class="text-m  text-gray-700 border-b bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
                <tr class="grid grid-cols-8 ">
                   <th scope="col" class="pl-6 py-3 flex">
-                     CODE
-                     <button type="button" class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" on:click={() => handleSort('code')}>
+                     GENDER
+                     <button type="button" class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" on:click={() => handleSort('name')}>
                         <svg fill="currentColor" class="w-5 h-5 dark:text-gray-400" viewBox="0 0 24 24" aria-hidden="true">
                            <path clip-rule="evenodd" fill-rule="evenodd" d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"></path>
                          </svg>
                     </button>
-
                   </th>
                   <th scope="col" class="pl-6 py-3 col-span-3 flex">
                      DESCRIPTION
@@ -184,18 +183,18 @@
          <tbody>
             {#key paginatedItems}
                 {#if paginatedItems.length}
-                   {#each paginatedItems as division}
-                     <tr class="grid grid-cols-8 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"  on:mouseenter={() => {if (currentDivision !== division){currentDivision = division}}}>
+                   {#each paginatedItems as gender}
+                     <tr class="grid grid-cols-8 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"  on:mouseenter={() => {if (currentGender !== gender){currentGender = gender}}}>
                         <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                           <div class="text-m font-medium">{division.code}</div>
+                           <div class="text-m font-medium">{gender.name}</div>
                         </th>
                         <td class="flex items-center px-6 py-4 col-span-3">
-                           <div class="text-m text-gray-700 font-medium">{division.description}</div>
+                           <div class="text-m text-gray-700 font-medium">{gender.description}</div>
                         </td>
                         <td class="flex items-center px-6 py-4">
                            <div class="flex items-center ">
-                              <div class="{division.isActive ? 'h-2.5 w-2.5 rounded-full bg-green-500 mr-2': 'h-2.5 w-2.5 rounded-full bg-red-500 mr-2'}"></div>
-                              <div class="text-sm text-gray-700 font-medium">{division.isActive? 'Active' : 'Inactive'}</div>
+                              <div class="{gender.isActive ? 'h-2.5 w-2.5 rounded-full bg-green-500 mr-2': 'h-2.5 w-2.5 rounded-full bg-red-500 mr-2'}"></div>
+                              <div class="text-sm text-gray-700 font-medium">{gender.isActive? 'Active' : 'Inactive'}</div>
                            </div>
                         </td>
 
@@ -206,7 +205,7 @@
                               textColor="text-white" 
                               bgColor="bg-blue-700" 
                               bgColorHover="bg-blue-800"
-                              on:click={handleEditDivisionModal}
+                              on:click={handleEditGenderModal}
                               >
                               <svg class="w-5 h-5 dark:text-gray-400" fill="currentColor" viewBox="0 0 24 24"aria-hidden="true">
                                  <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z"></path>
@@ -255,14 +254,13 @@
 </div>
 
 {#if isAddModalOpen}
-   <AddDivisionForm bind:isAddModalOpen {loadDivision}/>
+   <AddGenderForm bind:isAddModalOpen {loadGender}/>
 {/if}
-
-{#if currentDivisionExist}
+{#if currentGenderExist}
    {#if isEditModalOpen}
-      <EditDivisionForm bind:isEditModalOpen bind:currentDivision {loadDivision}/>
+      <EditGenderForm bind:isEditModalOpen bind:currentGender {loadGender}/>
    {/if}
    {#if isConfirmModalOpen}
-      <ConfirmDeleteDivision bind:isConfirmModalOpen bind:currentDivision {loadDivision}/>
+      <ConfirmDeleteGender bind:isConfirmModalOpen bind:currentGender {loadGender}/>
    {/if}
 {/if}
