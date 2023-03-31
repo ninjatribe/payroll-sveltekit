@@ -5,7 +5,7 @@
 
 	export let editModalOpen = false;
 	export let currentPosition;
-	export let loadPosition = () => {};
+	export let loadPositions = () => {};
 
 	let _id = '';
 	let code = '';
@@ -79,7 +79,7 @@
 		let result = await response.json();
 		editModalOpen = false;
 		if (result.status === 'Success') {
-			loadPosition();
+			loadPositions();
 		}
 	}
 
