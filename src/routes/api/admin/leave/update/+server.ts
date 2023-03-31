@@ -10,7 +10,11 @@ export async function POST({ request, locals }: any) {
         { _id: data._id }, 
         { $set: {
             code: data.code,
-            description: data.description
+            description: data.description,
+			grouptype: data.grouptype,
+			datetype: data.datetype,
+			maxday: data.maxday,
+			dbfiling: data.dbfiling
         }}
     );
 	if (response) {
