@@ -141,7 +141,7 @@
     <div class = "p-3 mt-3 bg-blue-600 h-fit rounded-lg">
         <div class = "grow p-2">
             <div class = "p-3 text-2xl font-mono">Employee list</div>
-            <table class = "p-4 w-full bg-slate-100 border-b-2 border-black rounded-m border-seperate text-left">
+            <table class = "p-4 w-full bg-slate-100 border-b-2 border-black rounded-m border-seperate text-left overflow-auto">
                 <thead>
                     <tr class="grid grid-cols-10">
                         <th scope = "col" class = "p-3 text-sm font-semibold tracking-wide text-center">Employee No.
@@ -169,46 +169,41 @@
                 </thead>
                 <tbody>
                     {#key paginatedItems}
-                     {#if paginatedItems.lenght}
+                     {#if paginatedItems.length}
                      {#each paginatedItems as employees}
-                      <tr class="grid grid-cols-8 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"  on:mouseenter={() => {if (currentEmployee !== employees){currentEmployee = employees}}}>
+                      <tr class="grid grid-cols-10 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"  on:mouseenter={() => {if (currentEmployee !== employees){currentEmployee = employees}}}>
                         <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                            <div class="text-m font-medium">{employees.empNo}</div>
+                            <div class="text-sm font-medium">{employees.empNo}</div>
                         </th>
                         <td class="flex items-center px-6 py-4">
-                            <div class="text-m font-medium">{employees.fullName}</div>
+                            <div class="text-sm font-medium">{employees.fullName}</div>
                         </td>
                         <td class="flex items-center px-6 py-4">
-                            <div class="text-m font-medium">placeholder</div>
+                            <div class="text-sm font-medium">placeholder</div>
                         </td>
                         <td class="flex items-center px-6 py-4">
-                            <div class="text-m font-medium">placeholder</div>
+                            <div class="text-sm font-medium">placeholder</div>
                         </td>
                         <td class="flex items-center px-6 py-4">
-                            <div class="text-m font-medium">{employees.emp_div}</div>
+                            <div class="text-sm font-medium">{employees.emp_div}</div>
                         </td>
                         <td class="flex items-center px-6 py-4">
-                            <div class="text-m font-medium">{employees.emp_email}</div>
+                            <div class="text-sm font-medium">{employees.emp_email}</div>
                         </td>
                         <td class="flex items-center px-6 py-4">
                             <div class="{employees.isActive ? 'h-2.5 w-2.5 rounded-full bg-green-500 mr-2': 'h-2.5 w-2.5 rounded-full bg-red-500 mr-2'}"></div>
                             <div class="text-sm text-gray-700 font-medium">{employees.isActive? 'Active' : 'Inactive'}</div>
                         </td>
                         <td class="flex items-center px-6 py-4">
-                            <div class="text-m font-medium">placeholder</div>
+                            <div class="text-sm font-medium">placeholder</div>
                         </td>
                         <td class="flex items-center px-6 py-4">
-                            <div class="text-m font-medium">placeholder</div>
+                            <div class="text-sm font-medium">placeholder</div>
                         </td>
                         <td class="flex items-center px-6 py-4">
                             <button
-                            extraClasses="mx-1 pr-4 pl-4 inline-flex items-center text-center font-semibold rounded-lg" 
-                              textSize="text-m" 
-                              textColor="text-white" 
-                              bgColor="bg-blue-700" 
-                              bgColorHover="bg-blue-800"
-                              on:click={handleOPenModalUpdateEmployees}>Update</button>
-                            <button>Delete</button>
+                            class="mx-1 pl-4 inline-flex items-center text-center font-serif rounded-lg text-sm bg-blue-600" on:click={handleOPenModalUpdateEmployees}>Update</button>
+                            <button class = "pl-2 text-sm bg-red-600 rounded-lg">Delete</button>
                         </td>
                     </tr>
                     {/each}

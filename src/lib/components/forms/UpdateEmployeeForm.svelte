@@ -10,6 +10,7 @@
     export let loadEmployees = () => {};
 
     //submit variables
+    let _id = '';
     let emp_picture = '';
     let empNo = '';
     let empScanNo = '';
