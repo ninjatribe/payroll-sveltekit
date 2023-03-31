@@ -4,7 +4,7 @@
 
 	export let deleteModalOpen = false;
 	export let currentPosition;
-	export let loadPosition = () => {};
+	export let loadPositions = () => {};
 
 	const position = currentPosition;
 	const _id = position._id;
@@ -24,7 +24,7 @@
 		let result = await response.json();
 		deleteModalOpen = false;
 		if (result.status === 'Success') {
-			loadPosition();
+			loadPositions();
 		}
 	}
 </script>

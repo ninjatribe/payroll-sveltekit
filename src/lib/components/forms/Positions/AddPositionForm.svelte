@@ -3,7 +3,7 @@
 	import Button from '$lib/components/reusable/Button.svelte';
 
 	export let addModalOpen = false;
-	export let loadPosition = () => {};
+	export let loadPositions = () => {};
 
 	let code = '';
 	let postionTitle = '';
@@ -43,7 +43,7 @@
 		let result = await response.json();
 		addModalOpen = false;
 		if (result.status === 'Success') {
-			loadPosition();
+			loadPositions();
 		}
 	}
 </script>
