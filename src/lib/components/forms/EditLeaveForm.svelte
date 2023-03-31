@@ -1,43 +1,44 @@
 <script>
-    // @ts-nocheck
-    export let title;
-    import Button from "../reusable/Button.svelte";
-    import { onMount } from "svelte";
+	// @ts-nocheck
+	export let title;
+	import Button from '../reusable/Button.svelte';
+	import { onMount } from 'svelte';
 
-    export let isEditLeaveOpen = false;
-    export let currentLeave;
-    export let loadLeave = () => {};
+	export let isEditLeaveOpen = false;
+	export let currentLeave;
+	export let loadLeave = () => {};
 
-    let code = '', description = '', grouptype = '', datetype = '', maxday = '', dbfiling = '';
+	let code = '',
+		description = '',
+		grouptype = '',
+		datetype = '',
+		maxday = '',
+		dbfiling = '';
 
-    function setEditValues()
-    {
-        if(currentLeave === undefined)
-        {
-            currentLeave = [
-                {code:"NA"},
-                {description:"NA"},
-                {grouptype:"NA"},
-                {datetype:"NA"},
-                {maxday:"NA"},
-                {dbfiling:"NA"},
-            ]
-        }
-        code = currentLeave.code;
-        description = currentLeave.description;
+	function setEditValues() {
+		if (currentLeave === undefined) {
+			currentLeave = [
+				{ code: 'NA' },
+				{ description: 'NA' },
+				{ grouptype: 'NA' },
+				{ datetype: 'NA' },
+				{ maxday: 'NA' },
+				{ dbfiling: 'NA' }
+			];
+		}
+		code = currentLeave.code;
+		description = currentLeave.description;
 		grouptype = currentLeave.grouptype;
 		datetype = currentLeave.datetype;
 		maxday = currentLeave.maxday;
 		dbfiling = currentLeave.dbfiling;
+	}
 
-    }
+	const handleCloseModal = () => (isEditLeaveOpen = false);
 
-    const handleCloseModal = () => isEditLeaveOpen = false;
-
-    async function handleSubmit(event)
-    {
-        console.log(code);
-        console.log(description);
+	async function handleSubmit(event) {
+		console.log(code);
+		console.log(description);
 		console.log(grouptype);
 		console.log(datetype);
 		console.log(maxday);
@@ -49,26 +50,24 @@
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-                code,
+				code,
 				description,
 				grouptype,
 				datetype,
 				maxday,
-				dbfiling,
-
+				dbfiling
 			})
 		});
 		let result = await response.json();
 		isEditLeaveOpen = false;
 		if (result.status === 'Success') {
-            loadLeave();
+			loadLeave();
 		}
-    }
+	}
 
-    onMount(() => {
-        setEditValues();
-    });
-
+	onMount(() => {
+		setEditValues();
+	});
 </script>
 
 <div class="fixed z-10 inset-0 overflow-y-auto {isEditLeaveOpen ? 'block' : 'hidden'}">
@@ -97,58 +96,55 @@
 							/>
 						</div>
 
-                        <div class="mt-4">
-                            
-                            <label for="description"class="block mb-2 font-bold text-gray-700">Description</label>
-                            <textarea 
-                                id="description"
-                                name="description"
+						<div class="mt-4">
+							<label for="description" class="block mb-2 font-bold text-gray-700">Description</label
+							>
+							<textarea
+								id="description"
+								name="description"
 								rows="4"
 								bind:value={description}
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                placeholder="Write here..."
-                            />
-                        </div>
-
-					<div class="grid grid-cols-2 gap-2">
-
-						<div class="mb-4">
-							<label for="grouptype" class="block mb-2 font-bold text-gray-700">Group Type:</label>
-							<select
-							
-								id="grouptype"
-								name="grouptype"
-								bind:value={grouptype}
-								class="w-48 px-4 py-2 text-gray-700 bg-white border rounded shadow appearance-none focus:outline-none focus:shadow-outline class:active:bg-gray-100 class:focus:outline-none class:focus:bg-gray-100"
-								>
-                                <option value="" disabled selected>Select a number</option>
-                                <option value="One">1</option>
-                                <option value="Two">2</option>
-                                <option value="Three">3</option>
-                                <option value="Four">4</option>
-                                <option value="Five">5</option>
-                                <option value="Six">6</option>
-                                <option value="Seven">7</option>
-							</select>
+								class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+								placeholder="Write here..."
+							/>
 						</div>
 
-                        <div class="mb-4 ">
-							<label for="datetype" class="block mb-2 font-bold text-gray-700">Date Type:</label>
-							<select
-								id="datetype"
-								name="datetype"
-								bind:value={datetype}
-								class="w-48 px-4 py-2 text-gray-700 bg-white border rounded shadow appearance-none focus:outline-none focus:shadow-outline class:active:bg-gray-100 class:focus:outline-none class:focus:bg-gray-100"
+						<div class="grid grid-cols-2 gap-2">
+							<div class="mb-4">
+								<label for="grouptype" class="block mb-2 font-bold text-gray-700">Group Type:</label
 								>
-                                <option value="" disabled selected>Select the type</option>
-                                <option value="Perday">Per Day</option>
-                                <option value="Perweek">Per Week</option>
-                                <option value="Permonth">Per Month</option>
-                               
-							</select>
-						</div>
+								<select
+									id="grouptype"
+									name="grouptype"
+									bind:value={grouptype}
+									class="w-48 px-4 py-2 text-gray-700 bg-white border rounded shadow appearance-none focus:outline-none focus:shadow-outline class:active:bg-gray-100 class:focus:outline-none class:focus:bg-gray-100"
+								>
+									<option value="" disabled selected>Select a number</option>
+									<option value="One">1</option>
+									<option value="Two">2</option>
+									<option value="Three">3</option>
+									<option value="Four">4</option>
+									<option value="Five">5</option>
+									<option value="Six">6</option>
+									<option value="Seven">7</option>
+								</select>
+							</div>
 
-					</div>
+							<div class="mb-4 ">
+								<label for="datetype" class="block mb-2 font-bold text-gray-700">Date Type:</label>
+								<select
+									id="datetype"
+									name="datetype"
+									bind:value={datetype}
+									class="w-48 px-4 py-2 text-gray-700 bg-white border rounded shadow appearance-none focus:outline-none focus:shadow-outline class:active:bg-gray-100 class:focus:outline-none class:focus:bg-gray-100"
+								>
+									<option value="" disabled selected>Select the type</option>
+									<option value="Perday">Per Day</option>
+									<option value="Perweek">Per Week</option>
+									<option value="Permonth">Per Month</option>
+								</select>
+							</div>
+						</div>
 
 						<div class="mb-4">
 							<label for="maxdays" class="block mb-2 font-bold text-gray-700">Max Days:</label>
@@ -162,7 +158,9 @@
 						</div>
 
 						<div class="mb-4">
-							<label for="DbFiling" class="block mb-2 font-bold text-gray-700">Date Before Filing:</label>
+							<label for="DbFiling" class="block mb-2 font-bold text-gray-700"
+								>Date Before Filing:</label
+							>
 							<input
 								type="date"
 								id="DbFiling"
@@ -174,17 +172,30 @@
 
 						<div class="text-center">
 							<div class="grid grid-cols-2">
-                                <Button 
-                                    type="submit"
-                                    extraClasses="col-start-3 mx-5 pr-2 pl-2 inline-flex items-center text-center font-semibold rounded-lg" 
-                                    textSize="text-xs" 
-                                    textColor="text-white" 
-                                    bgColor="bg-green-700" 
-                                    bgColorHover="bg-green-900"
-                                    >
-                                    <svg class="w-5 h-5 mr-1 dark:text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path></svg>
-                                    Submit
-                                </Button>
+								<Button
+									type="submit"
+									extraClasses="col-start-3 mx-5 pr-2 pl-2 inline-flex items-center text-center font-semibold rounded-lg"
+									textSize="text-xs"
+									textColor="text-white"
+									bgColor="bg-green-700"
+									bgColorHover="bg-green-900"
+								>
+									<svg
+										class="w-5 h-5 mr-1 dark:text-gray-400"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										viewBox="0 0 24 24"
+										aria-hidden="true"
+										><path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M12 4.5v15m7.5-7.5h-15"
+										/></svg
+									>
+									Submit
+								</Button>
+							</div>
 						</div>
 					</form>
 				</div>
