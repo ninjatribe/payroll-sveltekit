@@ -1,4 +1,3 @@
-<!--Modal for adding employees STILL WORK IN PROGRESS-->
 <script>
 	import { onMount } from "svelte";
 
