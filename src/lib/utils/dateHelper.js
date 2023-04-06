@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { format, differenceInMilliseconds } from 'date-fns';
 
 function dateToString(value, stringFormat = 'yyyy-MM-dd') {

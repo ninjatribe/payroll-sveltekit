@@ -46,8 +46,9 @@
 			itemSize = paginatedItems.length;
 			paginatedItems = paginate({ items: paginatedItems, pageSize, currentPage });
 		}
-		pageMinIndex = 1 + (currentPage - 1) * pageSize;
-		pageMaxIndex = pageSize * currentPage > itemSize ? itemSize : pageSize * currentPage;
+		pageMinIndex = paginatedItems.length == 0 ? 0 : 1 + (currentPage - 1) * pageSize;
+		pageMaxIndex =
+			pageSize * currentPage > itemSize ? paginatedItems.length : pageSize * currentPage;
 	}
 
 	const addPositionModal = () => (addModalOpen = !addModalOpen);

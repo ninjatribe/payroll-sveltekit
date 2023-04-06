@@ -16,7 +16,7 @@
 	{#if $page.data.user}
 		<Navbar />
 		<Sidebar />
-		<main class="mt-16 ml-[16.5rem]">
+		<main class="mt-16 ml-[15.5rem]">
 			<slot />
 		</main>
 	{:else}

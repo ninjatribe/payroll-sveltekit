@@ -6,8 +6,6 @@
 	import AddUserForm from '$lib/components/forms/AddUserForm.svelte';
 	import AddStudentForm from '$lib/components/forms/AddStudentForm.svelte';
 	import Dashboard from '../lib/components/forms/Dashboard.svelte';
-	import Navbar from '$lib/components/Navbar.svelte';
-	import Sidebar from '$lib/components/Sidebar.svelte';
 
 	let search;
 	let items = [];

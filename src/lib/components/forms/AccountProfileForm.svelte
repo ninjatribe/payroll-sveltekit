@@ -1,30 +1,63 @@
 <script>
+    // @ts-nocheck
     import {page} from '$app/stores';
 
     export let isAccountProfileOpen = false;
     
+    let profile = $page.data.user.profile;
+    let updateConfirm = false;
+
     function toggleProfileForm(){
         isAccountProfileOpen = !isAccountProfileOpen;
     };
-    let profile = $page.data.user.profile;
-
+    
+    async function handleSubmit(event)
+    {
+		event?.preventDefault();
+        const _id = $page.data.user._id;
+        const response = await fetch('/api/admin/user/update', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                _id,
+                profile
+            })
+        });
+        let result = await response.json();
+		if (result.status === 'Success') {
+			updateConfirm = true;
+			setTimeout(() => updateConfirm = false, 1000)
+            console.log("Update Success!");
+		}
+    }
   </script>
 
-<div class="fixed inset-0 z-1 overflow-y-auto">
+<div class="fixed inset-0 z-50 overflow-y-auto {isAccountProfileOpen ? 'block': 'hidden'}">
     <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
         <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-2 sm:w-full sm:max-w-lg">
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <form class="w-full max-w-lg">
+                <form class="w-full max-w-lg" on:submit={handleSubmit}>
                     <div class="flex w-full justify-center items-center px-3">
                         <img class="h-auto md:w-1/3 rounded-full outline outline-1 w-96 h-96" src="{profile.photo.url}" alt="">
                     </div>
+                    <button 
+                        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white" 
+                        type="button" 
+                        data-modal-hide="confirm-modal"
+                        on:click={toggleProfileForm}
+                    >
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" ><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    <span class="sr-only">Close modal</span>
+                    </button>
                     <div class="flex flex-wrap my-4 -mx-3 mb-6">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                             First Name
                             </label>
                             <input 
-                                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" 
+                                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" 
                                 id="grid-first-name" 
                                 type="text" 
                                 placeholder="{profile.firstName}"
@@ -97,21 +130,29 @@
                         >
                         </div>
                     </div>
+                    <div class=" py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                        <button 
+                            type="button" 
+                            class="inline-flex mr-0 w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
+                            on:click={toggleProfileForm}
+                            >Cancel
+                        </button>
+                        <button 
+                            type="submit" 
+                            class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
+                            >Update
+                        </button>
+                        <h3 class="pt-3 pr-3 text-sm font-semibold text-green-500 dark:text-gray-400 {updateConfirm ? 'opacity-100 pointer-events-auto' : 'transition-opacity opacity-0 pointer-events-none'}">Profile Updated!</h3>
+                    </div>
                 </form>
-            </div>
-            <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                <button 
-                    type="button" 
-                    class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
-                    >Update
-                </button>
-                <button 
-                    type="button" 
-                    class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
-                    on:click={toggleProfileForm}
-                    >Cancel
-                </button>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+	.transition-opacity {
+		transition-property: opacity;
+		transition-duration: 1s;
+	}
+</style>
