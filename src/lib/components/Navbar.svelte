@@ -87,6 +87,4 @@
       </div>
   </div>
 </nav>
-{#if isAccountProfileOpen}
-  <AccountProfileForm bind:isAccountProfileOpen/>
-{/if}
+<AccountProfileForm bind:isAccountProfileOpen/>
