@@ -1,8 +1,8 @@
 <script>
 	// @ts-nocheck
 	export let title;
-	export let isModal2Open = false;
-	export let loadStudent = () => {};
+	export let addModalOpen = false;
+	export let loadUsers = () => {};
 	// import bcrypt from 'bcryptjs';
 	import { SHA256 } from 'crypto-js';
 
@@ -15,10 +15,7 @@
 		country = '',
 		password = '';
 
-	const handleClose = () => {
-		isModal2Open = false;
-		console.log(isModal2Open);
-	};
+	const closeModal = () => (addModalOpen = false);
 
 	async function handleSubmit(event) {
 		event?.preventDefault();
@@ -44,14 +41,14 @@
 			})
 		});
 		let result = await response.json();
-		isModal2Open = false;
+		addModalOpen = false;
 		if (result.status === 'Success') {
-			loadStudent();
+			loadUsers();
 		}
 	}
 </script>
 
-<div class="fixed z-10 inset-0 overflow-y-auto {isModal2Open ? 'block' : 'hidden'}">
+<div class="fixed z-10 inset-0 overflow-y-auto {addModalOpen ? 'block' : 'hidden'}">
 	<div class="flex items-center justify-center min-h-screen">
 		<div class="fixed inset-0 bg-gray-500 bg-opacity-75" />
 		<div
@@ -169,7 +166,7 @@
 				<button
 					type="button"
 					class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 border border-transparent rounded-md hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-					on:click={handleClose}
+					on:click={closeModal}
 				>
 					Close
 				</button>

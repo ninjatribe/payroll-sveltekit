@@ -1,11 +1,8 @@
 <script>
 	// @ts-nocheck
 	export let title;
-	import Button from '../reusable/Button.svelte';
-	import { onMount } from 'svelte';
-
-	export let isEditLeaveOpen = false;
-	export let currentLeave;
+	export let isLeaveFormOpen = false;
+	import Button from '$lib/components/reusable/Button.svelte';
 	export let loadLeave = () => {};
 
 	let code = '',
@@ -15,36 +12,13 @@
 		maxday = '',
 		dbfiling = '';
 
-	function setEditValues() {
-		if (currentLeave === undefined) {
-			currentLeave = [
-				{ code: 'NA' },
-				{ description: 'NA' },
-				{ grouptype: 'NA' },
-				{ datetype: 'NA' },
-				{ maxday: 'NA' },
-				{ dbfiling: 'NA' }
-			];
-		}
-		code = currentLeave.code;
-		description = currentLeave.description;
-		grouptype = currentLeave.grouptype;
-		datetype = currentLeave.datetype;
-		maxday = currentLeave.maxday;
-		dbfiling = currentLeave.dbfiling;
+	function toggleLeaveForm() {
+		isLeaveFormOpen = !isLeaveFormOpen;
 	}
 
-	const handleCloseModal = () => (isEditLeaveOpen = false);
-
 	async function handleSubmit(event) {
-		console.log(code);
-		console.log(description);
-		console.log(grouptype);
-		console.log(datetype);
-		console.log(maxday);
-		console.log(dbfiling);
 		event?.preventDefault();
-		const response = await fetch('/api/admin/leave/update', {
+		const response = await fetch('/api/admin/leave/insert', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -59,18 +33,15 @@
 			})
 		});
 		let result = await response.json();
-		isEditLeaveOpen = false;
+		isLeaveFormOpen = false;
 		if (result.status === 'Success') {
+			console.log('Success');
 			loadLeave();
 		}
 	}
-
-	onMount(() => {
-		setEditValues();
-	});
 </script>
 
-<div class="fixed z-10 inset-0 overflow-y-auto {isEditLeaveOpen ? 'block' : 'hidden'}">
+<div class="fixed z-10 inset-0 overflow-y-auto {isLeaveFormOpen ? 'block' : 'hidden'}">
 	<div class="flex items-center justify-center min-h-screen">
 		<div class="fixed inset-0 bg-gray-500 bg-opacity-75" />
 		<div
@@ -159,7 +130,7 @@
 
 						<div class="mb-4">
 							<label for="DbFiling" class="block mb-2 font-bold text-gray-700"
-								>Date Before Filing:</label
+								>Date Befor Filing:</label
 							>
 							<input
 								type="date"
@@ -204,7 +175,7 @@
 				<button
 					type="button"
 					class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 border border-transparent rounded-md hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-					on:click={handleCloseModal}
+					on:click={toggleLeaveForm}
 				>
 					Close
 				</button>

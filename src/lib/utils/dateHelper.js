@@ -37,7 +37,7 @@ export const ymd = (date, delimiter = '/') => {
 	return `${year}${delimiter}${month}${delimiter}${_date}`;
 };
 
-const months = [
+export const months = [
 	'January',
 	'Febuary',
 	'March',

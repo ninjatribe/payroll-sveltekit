@@ -2,44 +2,58 @@
 	// @ts-nocheck
 	import { onMount } from 'svelte';
 	import { paginate } from 'svelte-paginate';
-	import AddLeaveForm from '$lib/components/forms/leaves/AddLeaveForm.svelte';
-	import EditLeaveForm from '$lib/components/forms/leaves/EditLeaveForm.svelte';
-	import ConfirmDeleteLeave from '$lib/components/forms/leaves/ConfirmDeleteLeave.svelte';
 	import Button from '$lib/components/reusable/Button.svelte';
-	import dateToString from '$lib/utils/dateHelper';
+	import AddHolidayForm from '$lib/components/forms/holidays/AddHolidayForm.svelte';
+	import EditHolidayForm from '$lib/components/forms/holidays/EditHolidayForm.svelte';
+	import DeleteHolidayForm from '$lib/components/forms/holidays/DeleteHolidayForm.svelte';
+	import { formatDateMDY, months } from '$lib/utils/dateHelper';
 
 	let status = 'all';
+	let month = 'all';
 	let search;
-	let isLeaveFormOpen = false;
-	let isEditLeaveOpen = false;
-	let isDeleteDataOpen = false;
+	let addModalOpen = false;
+	let editModalOpen = false;
+	let deleteModalOpen = false;
 	let items = [];
 	let currentPage = 1;
-	let pageSize = 10;
+	let pageSize = 5;
 	let itemSize;
 	let paginatedItems = [];
-	let currentLeave;
+	let currentHoliday;
 	let pageMinIndex = 1;
 	let pageMaxIndex = pageSize;
 	let sortOrder = 'asc';
-	let sortBy = 'code';
+	let sortBy = 'date';
 
 	$: {
 		// Prevent user to input below the minimum or beyond the maximum value of pagesize.
 		if (pageSize < 1) pageSize = 1;
 		// reactive statement to automatically filter data based on status.
 		paginatedItems = search
-			? items.filter((leave) => {
+			? items.filter((holiday) => {
+					const monthRegex = month === 'all' ? /.*/ : RegExp(month, 'gi');
+					const searchRegex = RegExp(search, 'gi');
+					const date = new Date(holiday.date);
 					return status !== 'all'
-						? (leave.code.match(RegExp(search, 'gi')) ||
-								leave.description.match(RegExp(search, 'gi'))) &&
-								leave.isActive === (status === 'active')
-						: leave.code.match(RegExp(search, 'gi')) ||
-								leave.description.match(RegExp(search, 'gi'));
+						? date.getMonth().toString().match(monthRegex) &&
+								(holiday.date.match(searchRegex) ||
+									holiday.description.match(searchRegex) ||
+									holiday.holidayType.match(searchRegex)) &&
+								holiday.status === (status === 'active')
+						: date.getMonth().toString().match(monthRegex) &&
+								(holiday.date.match(searchRegex) ||
+									holiday.description.match(searchRegex) ||
+									holiday.holidayType.match(searchRegex));
 			  })
-			: items.filter((leave) => {
-					return status !== 'all' ? leave.isActive === (status === 'active') : items;
+			: items.filter((holiday) => {
+					const monthRegex = month === 'all' ? /.*/ : RegExp(month, 'gi');
+					const date = new Date(holiday.date);
+					return status !== 'all'
+						? holiday.status === (status === 'active') &&
+								date.getMonth().toString().match(monthRegex)
+						: date.getMonth().toString().match(monthRegex);
 			  });
+
 		if (paginatedItems.length) {
 			itemSize = paginatedItems.length;
 			paginatedItems = paginate({ items: paginatedItems, pageSize, currentPage });
@@ -49,9 +63,9 @@
 			pageSize * currentPage > itemSize ? paginatedItems.length : pageSize * currentPage;
 	}
 
-	const handleleaveformnModal = () => (isLeaveFormOpen = !isLeaveFormOpen);
-	const handleEditLeaveModal = () => (isEditLeaveOpen = !isEditLeaveOpen);
-	const handleConfirmDeleteModal = () => (isDeleteDataOpen = !isDeleteDataOpen);
+	const addHolidayModal = () => (addModalOpen = !addModalOpen);
+	const editHolidayModal = () => (editModalOpen = !editModalOpen);
+	const deleteHolidayModal = () => (deleteModalOpen = !deleteModalOpen);
 	const handleOverFlow = () => {
 		if (pageMinIndex > itemSize) currentPage = 1;
 	};
@@ -62,20 +76,20 @@
 		if (pageMaxIndex < itemSize) currentPage += 1;
 	};
 
-	function currentLeaveExist() {
-		if (currentLeave === undefined || !items.includes(currentLeave)) {
-			log.error('Selected leave does not exist in items fetch from database!');
+	function currentHolidayExist() {
+		if (currentHoliday === undefined || !items.includes(currentHoliday)) {
+			log.error('The Holiday does not exist in items fetch from database!');
 			return false;
 		}
-		if (leave.code === '' || leave.description === '') {
+		if (holiday.code === '' || holiday.description === '') {
 			return false;
 		}
 		return true;
 	}
 
-	async function loadLeave() {
+	async function loadHolidays() {
 		try {
-			let response = await fetch('/api/admin/leave', {
+			let response = await fetch('/api/admin/holidays', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json'
@@ -98,7 +112,7 @@
 		});
 	}
 
-	function handleSort(columnName) {
+	function sortColumn(columnName) {
 		if (columnName === sortBy) {
 			sortOrder = sortOrder === 'asc' ? 'des' : 'asc';
 			console.warn(sortOrder);
@@ -109,27 +123,52 @@
 	}
 
 	onMount(async () => {
-		loadLeave();
+		loadHolidays();
 	});
 </script>
 
 <div class="border-2 border-gray-100 overflow-x-auto rounded-lg h-auto dark:border-gray-700 mt-12">
 	<div class="flex flex-col justify-center border-b h-fit rounded bg-blue-600 dark:bg-gray-800">
 		<div class="flex flex-col px-5 justify-center py-4">
-			<span class="text-xl font-semibold" style="color:white">Leaves</span>
-			<span class="text-m" style="color:white">Apply Leave</span>
+			<span class="text-xl font-semibold" style="color:white">Holidays</span>
+			<span class="text-m" style="color:white">Manage Holidays</span>
 		</div>
 		<div class="flex gap-4 h-auto px-5 py-5 bg-white dark:bg-gray-800">
 			<div class="flex flex-col w-full h-auto ">
-				<label
-					for="status"
-					class="block mb-2 pl-1 text-m font-semibold text-gray-900 dark:text-white">Status</label
-				>
 				<div class="grid grid-cols-9">
+					<label
+						for="month"
+						class="block mb-2 pl-1 text-m font-semibold text-gray-900 dark:text-white">Month</label
+					>
+					<label
+						for="status"
+						class="block mb-2 pl-1 text-m font-semibold text-gray-900 dark:text-white">Status</label
+					>
+				</div>
+				<div class="grid grid-cols-9">
+					<select
+						id="month"
+						bind:value={month}
+						class=" bg-gray-50 border border-gray-300 font-semibold text-gray-900 text-sm rounded-lg mr-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					>
+						<option class="text-sm font-semibold" value="all" selected>All</option>
+						<option class="text-sm font-semibold" value="0"> January</option>
+						<option class="text-sm font-semibold" value="1">February</option>
+						<option class="text-sm font-semibold" value="2">March</option>
+						<option class="text-sm font-semibold" value="3">April</option>
+						<option class="text-sm font-semibold" value="4">May</option>
+						<option class="text-sm font-semibold" value="5">June</option>
+						<option class="text-sm font-semibold" value="6">July</option>
+						<option class="text-sm font-semibold" value="7">August</option>
+						<option class="text-sm font-semibold" value="8">September</option>
+						<option class="text-sm font-semibold" value="9">October</option>
+						<option class="text-sm font-semibold" value="10">November</option>
+						<option class="text-sm font-semibold" value="11">December</option>
+					</select>
 					<select
 						id="status"
 						bind:value={status}
-						class=" bg-gray-50 border border-gray-300 font-semibold text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+						class=" bg-gray-50 border border-gray-300 font-semibold mx-2 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 					>
 						<option class="text-gray-900 text-sm font-semibold" value="all" selected>All</option>
 						<option class="text-green-600 text-sm font-semibold" value="active"> Active</option>
@@ -139,11 +178,11 @@
 						<Button
 							extraClasses="mx-1 pr-4 pl-4 inline-flex items-center text-center font-semibold rounded-lg"
 							textColor="text-white"
-							hoverTitle="Apply Leave"
+							hoverTitle="Add Holiday"
 							textSize="text-sm"
 							bgColor="bg-green-700"
 							bgColorHover="bg-green-800"
-							on:click={handleleaveformnModal}
+							on:click={addHolidayModal}
 							><svg
 								style="color: white"
 								xmlns="http://www.w3.org/2000/svg"
@@ -192,16 +231,15 @@
 			</div>
 		</div>
 	</div>
-	<div class="flex items-center justify-center h-fit mb-1 rounded bg-gray-50 dark:bg-gray-800">
+	<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 		<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 			<thead class="text-m  text-gray-700 border-b bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
-				<tr class="grid grid-cols-9">
+				<tr class="grid grid-cols-8 ">
 					<th scope="col" class="pl-6 py-3 flex">
-						CODE
-						<button
+						DATE <button
 							type="button"
 							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('code')}
+							on:click={() => sortColumn('date')}
 						>
 							<svg
 								fill="currentColor"
@@ -215,14 +253,35 @@
 									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
 								/>
 							</svg>
-						</button>
-					</th>
-					<th scope="col" class="pl-6 py-3 flex">
+						</button></th
+					>
+					<th scope="col" class="pl-6 py-3 col-span-2 flex">
 						DESCRIPTION
 						<button
 							type="button"
 							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('description')}
+							on:click={() => sortColumn('description')}
+						>
+							<svg
+								fill="currentColor"
+								class="w-5 h-5 dark:text-gray-400"
+								viewBox="0 0 24 24"
+								aria-hidden="true"
+							>
+								<path
+									clip-rule="evenodd"
+									fill-rule="evenodd"
+									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
+								/>
+							</svg>
+						</button>
+					</th>
+					<th scope="col" class="pl-6 py-3 col-span-2 flex">
+						HOLIDAY TYPE
+						<button
+							type="button"
+							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+							on:click={() => sortColumn('holidayType')}
 						>
 							<svg
 								fill="currentColor"
@@ -239,11 +298,10 @@
 						</button>
 					</th>
 					<th scope="col" class="pl-6 py-3 flex">
-						GROUP TYPE
-						<button
+						STATUS <button
 							type="button"
 							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('grouptype')}
+							on:click={() => sortColumn('status')}
 						>
 							<svg
 								fill="currentColor"
@@ -257,73 +315,10 @@
 									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
 								/>
 							</svg>
-						</button>
-					</th>
-					<th scope="col" class="pl-6 py-3 flex">
-						DATE TYPE
-						<button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('datetype')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button>
-					</th>
-					<th scope="col" class="pl-6 py-3 flex">
-						MAX DAYS
-						<button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('maxday')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button>
-					</th>
-					<th scope="col" class="pl-6 py-3 flex">
-						DATE BEFORE FILING
-						<button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('description')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button>
-					</th>
-					<th scope="col" class="pl-6 py-3 flex"> STATUS </th>
-					<th scope="col" class="px-6 py-3 col-span-2">
+						</button></th
+					>
+					<th scope="col" class="pl-6 py-3 flex"> ACTION </th>
+					<th scope="col" class="px-6 py-3 col-span-auto">
 						<div class="flex items-center justify-end ">
 							<label for="items" class="block text-m font-semibold text-gray-900 dark:text-white"
 								>Show</label
@@ -346,12 +341,12 @@
 			<tbody>
 				{#key paginatedItems}
 					{#if paginatedItems.length}
-						{#each paginatedItems as leave}
+						{#each paginatedItems as holiday}
 							<tr
-								class="grid grid-cols-9 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+								class="grid grid-cols-8 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
 								on:mouseenter={() => {
-									if (currentLeave !== leave) {
-										currentLeave = leave;
+									if (currentHoliday !== holiday) {
+										currentHoliday = holiday;
 									}
 								}}
 							>
@@ -359,47 +354,39 @@
 									scope="row"
 									class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
 								>
-									<div class="text-m font-medium">{leave.code}</div>
+									<div class="text-m font-medium">{formatDateMDY(holiday.date)}</div>
 								</th>
-								<td class="flex items-center px-6 py-4 ">
-									<div class="text-m text-gray-700 font-medium">{leave.description}</div>
+								<td class="flex items-center px-6 py-4 col-span-2">
+									<div class="text-m text-gray-700 font-medium">{holiday.description}</div>
 								</td>
-								<td class="flex items-center px-6 py-4 ">
-									<div class="text-m text-gray-700 font-medium">{leave.grouptype}</div>
-								</td>
-								<td class="flex items-center px-6 py-4">
-									<div class="text-m text-gray-700 font-medium">{leave.datetype}</div>
-								</td>
-								<td class="flex items-center px-6 py-4">
-									<div class="text-m text-gray-700 font-medium">{leave.maxday}</div>
-								</td>
-								<td class="flex items-center px-6 py-4">
-									<div class="text-m text-gray-700 font-medium">{dateToString(leave.dbfiling)}</div>
+								<td class="flex items-center px-6 py-4 col-span-2">
+									<div class="text-m text-gray-700 font-medium">{holiday.holidayType}</div>
 								</td>
 								<td class="flex items-center px-6 py-4">
 									<div class="flex items-center ">
 										<div
-											class={leave.isActive
+											class={holiday.status
 												? 'h-2.5 w-2.5 rounded-full bg-green-500 mr-2'
 												: 'h-2.5 w-2.5 rounded-full bg-red-500 mr-2'}
 										/>
 										<div class="text-sm text-gray-700 font-medium">
-											{leave.isActive ? 'Active' : 'Inactive'}
+											{holiday.status ? 'Active' : 'Inactive'}
 										</div>
 									</div>
 								</td>
-								<td class="px-6 py-4 col-span-2">
+
+								<td class="px-3 py-3 col-span-2">
 									<Button
-										extraClasses="mx-1 pr-2 pl-4 inline-flex items-center text-center font-semibold rounded-full"
-										textSize="text-m"
+										extraClasses="mx-1 pr-4 pl-4 inline-flex items-center text-center font-semibold rounded-full"
 										hoverTitle="Edit"
+										textSize="text-m"
 										textColor="text-white"
 										bgColor="bg-blue-700"
 										bgColorHover="bg-blue-800"
-										on:click={handleEditLeaveModal}
+										on:click={editHolidayModal}
 									>
 										<svg
-											class="w-5 h-5 mr-2 dark:text-gray-400"
+											class="w-5 h-5 dark:text-gray-400"
 											fill="currentColor"
 											viewBox="0 0 24 24"
 											aria-hidden="true"
@@ -410,19 +397,18 @@
 											<path
 												d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z"
 											/>
-										</svg></Button
-									>
+										</svg>
+									</Button>
 									<Button
-										extraClasses="mx-1 pr-2 pl-4 inline-flex items-center text-center font-semibold rounded-full"
-										textSize="text-m"
+										extraClasses="mx-1 pr-4 pl-4 inline-flex items-center text-center font-semibold rounded-full"
 										hoverTitle="Delete"
+										textSize="text-m"
 										textColor="text-white"
 										bgColor="bg-red-600"
 										bgColorHover="bg-red-700"
-										on:click={handleConfirmDeleteModal}
-									>
-										<svg
-											class="w-5 h-5 mr-2 dark:text-gray-400 "
+										on:click={deleteHolidayModal}
+										><svg
+											class="w-5 h-5 dark:text-gray-400 "
 											fill="currentColor"
 											viewBox="0 0 24 24"
 											aria-hidden="true"
@@ -479,15 +465,15 @@
 	</div>
 </div>
 
-{#if isLeaveFormOpen}
-	<AddLeaveForm title={'Apply Leave'} bind:isLeaveFormOpen {loadLeave} />
+{#if addModalOpen}
+	<AddHolidayForm bind:addModalOpen {loadHolidays} />
 {/if}
 
-{#if currentLeaveExist}
-	{#if isEditLeaveOpen}
-		<EditLeaveForm title={'Apply Leave'} bind:isEditLeaveOpen bind:currentLeave {loadLeave} />
+{#if currentHolidayExist}
+	{#if editModalOpen}
+		<EditHolidayForm bind:editModalOpen bind:currentHoliday {loadHolidays} />
 	{/if}
-	{#if isDeleteDataOpen}
-		<ConfirmDeleteLeave bind:isDeleteDataOpen bind:currentLeave {loadLeave} />
+	{#if deleteModalOpen}
+		<DeleteHolidayForm bind:deleteModalOpen bind:currentHoliday {loadHolidays} />
 	{/if}
 {/if}

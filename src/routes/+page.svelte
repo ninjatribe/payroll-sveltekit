@@ -3,7 +3,6 @@
 	import { onMount } from 'svelte';
 	import dateToString from '$lib/utils/dateHelper';
 	import { paginate, LightPaginationNav } from 'svelte-paginate';
-	import AddUserForm from '$lib/components/forms/AddUserForm.svelte';
 	import AddStudentForm from '$lib/components/forms/AddStudentForm.svelte';
 	import Dashboard from '../lib/components/forms/Dashboard.svelte';
 
@@ -14,7 +13,6 @@
 	let itemSize;
 	let paginatedItems = [];
 	let isModalOpen = false;
-	let isModal2Open = false;
 
 	$: {
 		// reactive statement to automatically filter data
@@ -100,7 +98,7 @@
 	};
 </script>
 
-<Dashboard/>
+<Dashboard />
 <div class="p-4">
 	<div class="container mt-12">
 		<div class="flex mb-4">
@@ -170,8 +168,4 @@
 
 {#if isModalOpen}
 	<AddStudentForm title={'Add Student'} bind:isModalOpen {loadStudent} />
-{/if}
-
-{#if isModal2Open}
-	<AddUserForm title={'Add User'} bind:isModal2Open {loadUser} />
 {/if}
