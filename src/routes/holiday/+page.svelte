@@ -477,3 +477,5 @@
 		<DeleteHolidayForm bind:deleteModalOpen bind:currentHoliday {loadHolidays} />
 	{/if}
 {/if}
+
+
