@@ -201,7 +201,7 @@
 								id="fname"
 								name="fname"
 								bind:value={empFullName.firstName}
-								class="text-lg"
+								class="text-lg mr-3"
 								required
 							/>
 							<input
@@ -209,7 +209,7 @@
 								id="lname"
 								name="lname"
 								bind:value={empFullName.lastName}
-								class="text-lg"
+								class="text-lg mr-3"
 								required
 							/>
 							<input
@@ -217,7 +217,7 @@
 								id="sname"
 								name="sname"
 								bind:value={empFullName.surName}
-								class="text-lg"
+								class="text-lg mr-3"
 								required
 							/>
 							<input
@@ -225,7 +225,7 @@
 								id="exName"
 								name="exName"
 								bind:value={empFullName.extendName}
-								class="text-lg"
+								class="text-lg mr-3"
 								required
 							/>
 						</div>
@@ -236,17 +236,17 @@
 								id="dateOfBirth"
 								placeholder="dd/mm/yyyy"
 								bind:value={empDateofBirth}
-								class="text-lg border-b-2 shadow appearance-none border-blue-600"
+								class="text-m border-b-2 shadow appearance-none"
 								required
 							/>
 
-							<label for="placeOfBirth" class="text-lg ml-4 mr-4 pl-80">Place of Birth</label>
+							<label for="placeOfBirth" class="text-lg ml-16 pl-80">Place of Birth</label>
 
 							<input
 								type="text"
 								id="placeOfBirth"
 								bind:value={empPlaceofBirth}
-								class="text-lg border-b-2 shadow appearance-none border-blue-600"
+								class="text-m border-b-2 shadow appearance-none ml-3"
 								required
 							/>
 						</div>
@@ -256,7 +256,7 @@
 								type="text"
 								id="sex"
 								bind:value={empSex}
-								class="text-lg border-b-2 shadow appearance-none border-blue-600"
+								class="text-m border-b-2 shadow appearance-none  ml-16"
 								required
 							/>
 
@@ -265,7 +265,7 @@
 								type="text"
 								id="civilStatus"
 								bind:value={empCivStatus}
-								class="text-lg border-b-2 shadow appearance-none border-blue-600"
+								class="text-m border-b-2 shadow appearance-none "
 								required
 							/>
 						</div>
@@ -273,8 +273,8 @@
 						<!--Civil Service form-->
 						<div class="border-b-2 border-black w-auto h-auto bg-white">
 							<div class="py-4 text-2xl font-serif">IV. Civil Service Elgibility</div>
-							<div class="p-3 border-2 border-black">
-								<div class="grid grid-cols-8 h-auto w-full overflow-x-auto pb-5">
+							<div class="p-3 border-2 border-black w-full">
+								<div class="grid grid-cols-8 h-auto w-full overflow-x-scroll pb-5">
 									<div class="border-2 border-black p-2">
 										CAREER SERVICE/ RA 1080 under special laws / CES /CSEE / BARANGAY ELIGIBILITY/
 										DRIVERS LISCENCE
@@ -349,7 +349,7 @@
 						<div class="border-b-2 border-black w-auto h-auto bg-white">
 							<div class="py-4 text-2xl font-serif">V.Work Experience</div>
 							<div class="p-3 border-2 border-black">
-								<div class="grid grid-cols-7 h-auto w-full overflow-x-auto pb-5">
+								<div class="grid grid-cols-7 h-auto w-full overflow-x-scroll pb-5">
 									<div class="border-2 border-black p-2">Postion Title</div>
 									<div class="border-2 border-black p-2">DEPARTMENT/ AGENCY/ OFFICE</div>
 									<div class="border-2 border-black p-2">MONTHLY SALARY</div>
@@ -415,7 +415,7 @@
 								VI. Voluntary work or involvement in Civic/Non Government/ People/ Voluntary
 								Organization/s
 							</div>
-							<div class="p-3 border-2 border-black">
+							<div class="p-3 border-2 border-black overflow-x-scroll">
 								<div class="grid grid-cols-7 h-auto w-full overflow-x-auto pb-5">
 									<div class="border-2 border-black p-2">NAME & ADDRESS OF ORGANIZATIONS</div>
 									<div class="border-2 border-black p-2">INCLUSIVE DATES OF ATTENDANCE</div>
@@ -477,7 +477,7 @@
 								VII. LEARNING AND DEVELOPMENT INTERVENTIONS/TRAINING PROGRAMS ATTENDED
 							</div>
 							<div class="p-3 border-2 border-black">
-								<div class="grid grid-cols-8 h-auto w-full overflow-x-auto pb-5">
+								<div class="grid grid-cols-8 h-auto w-full overflow-x-scroll pb-5">
 									<div class="border-2 border-black p-2">
 										TITLE OF LEARNING AND DEVELOPMENT INTERVENTIONS/ TRAINING PROGRAMS
 									</div>
@@ -543,10 +543,10 @@
 							</div>
 						</div>
 						<!--page 4-->
-						<div class="border-b-2 border-black w-auto h-auto">
+						<div class="w-auto h-auto">
 							<div class="py-4 text-2xl font-serrif">Attachments</div>
 							<div
-								class="grid grid-cols-3 h-auto w-full overflow-x-auto pb-5 border-2 border-black"
+								class="grid grid-cols-3 h-auto w-full overflow-x-auto pb-5"
 							>
 								<div class="border-2 border-black p-2 text-center">FILE TITLE</div>
 								<div class="border-2 border-black p-2 text-center">FILE UPLOAD</div>
