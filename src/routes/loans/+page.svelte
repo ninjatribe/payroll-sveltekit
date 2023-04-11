@@ -2,23 +2,26 @@
 	// @ts-nocheck
 	import { onMount } from 'svelte';
 	import { paginate } from 'svelte-paginate';
-	import AddLeaveForm from '$lib/components/forms/leaves/AddLeaveForm.svelte';
-	import EditLeaveForm from '$lib/components/forms/leaves/EditLeaveForm.svelte';
-	import ConfirmDeleteLeave from '$lib/components/forms/leaves/ConfirmDeleteLeave.svelte';
+	import AddLoanForm from '$lib/components/forms/loans/AddLoanForm.svelte';
+	import EditLoanForm from '$lib/components/forms/loans/EditLoanForm.svelte';
+	import ConfirmDeleteLoan from '$lib/components/forms/loans/ConfirmDeleteLoan.svelte';
 	import Button from '$lib/components/reusable/Button.svelte';
-	import dateToString from '$lib/utils/dateHelper';
+	import SubLoanView from '$lib/components/forms/loans/SubLoanView.svelte';
+	
 
 	let status = 'all';
 	let search;
-	let isLeaveFormOpen = false;
-	let isEditLeaveOpen = false;
+	let isLoanFormOpen = false;
+	let isEditLoanOpen = false;
 	let isDeleteDataOpen = false;
+	let isSubloanViewOpen =false;
+	let isLoanViewOpen = false;
 	let items = [];
 	let currentPage = 1;
 	let pageSize = 10;
 	let itemSize;
 	let paginatedItems = [];
-	let currentLeave;
+	let currentLoan;
 	let pageMinIndex = 1;
 	let pageMaxIndex = pageSize;
 	let sortOrder = 'asc';
@@ -29,16 +32,16 @@
 		if (pageSize < 1) pageSize = 1;
 		// reactive statement to automatically filter data based on status.
 		paginatedItems = search
-			? items.filter((leave) => {
+			? items.filter((loan) => {
 					return status !== 'all'
-						? (leave.code.match(RegExp(search, 'gi')) ||
-								leave.description.match(RegExp(search, 'gi'))) &&
-								leave.isActive === (status === 'active')
-						: leave.code.match(RegExp(search, 'gi')) ||
-								leave.description.match(RegExp(search, 'gi'));
+						? (loan.code.match(RegExp(search, 'gi')) ||
+							loan.description.match(RegExp(search, 'gi'))) &&
+							loan.isActive === (status === 'active')
+						: loan.code.match(RegExp(search, 'gi')) ||
+							loan.description.match(RegExp(search, 'gi'));
 			  })
-			: items.filter((leave) => {
-					return status !== 'all' ? leave.isActive === (status === 'active') : items;
+			: items.filter((loan) => {
+					return status !== 'all' ? loan.isActive === (status === 'active') : items;
 			  });
 		if (paginatedItems.length) {
 			itemSize = paginatedItems.length;
@@ -49,9 +52,12 @@
 			pageSize * currentPage > itemSize ? paginatedItems.length : pageSize * currentPage;
 	}
 
-	const handleleaveformModal = () => (isLeaveFormOpen = !isLeaveFormOpen);
-	const handleEditLeaveModal = () => (isEditLeaveOpen = !isEditLeaveOpen);
+
+
+	const handleLoanFormModal = () => (isLoanFormOpen = !isLoanFormOpen);
+	const handleEditLoanModal = () => (isEditLoanOpen = !isEditLoanOpen);
 	const handleConfirmDeleteModal = () => (isDeleteDataOpen = !isDeleteDataOpen);
+	const handleSubLoanViewModal = () => (isSubloanViewOpen = !isSubloanViewOpen);
 
 	const handleOverFlow = () => {
 		if (pageMinIndex > itemSize) currentPage = 1;
@@ -63,20 +69,20 @@
 		if (pageMaxIndex < itemSize) currentPage += 1;
 	};
 
-	function currentLeaveExist() {
-		if (currentLeave === undefined || !items.includes(currentLeave)) {
-			log.error('Selected leave does not exist in items fetch from database!');
+	function currentLoanExist() {
+		if (currentLoan === undefined || !items.includes(currentLoan)) {
+			log.error('Selected loan does not exist in items fetch from database!');
 			return false;
 		}
-		if (leave.code === '' || leave.description === '') {
+		if (loan.code === '' || loan.description === '') {
 			return false;
 		}
 		return true;
 	}
 
-	async function loadLeave() {
+	async function loadLoan() {
 		try {
-			let response = await fetch('/api/admin/leave', {
+			let response = await fetch('/api/admin/loan', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json'
@@ -89,6 +95,7 @@
 			console.error('error', error);
 		}
 	}
+
 
 	function sortItems() {
 		let order = sortOrder === 'asc' ? 1 : -1;
@@ -110,15 +117,15 @@
 	}
 
 	onMount(async () => {
-		loadLeave();
+		loadLoan();
 	});
 </script>
 
 <div class="border-2 border-gray-100 overflow-x-auto rounded-lg h-auto dark:border-gray-700 mt-12">
 	<div class="flex flex-col justify-center border-b h-fit rounded bg-blue-600 dark:bg-gray-800">
 		<div class="flex flex-col px-5 justify-center py-4">
-			<span class="text-xl font-semibold" style="color:white">Leaves</span>
-			<span class="text-m" style="color:white">Apply Leave</span>
+			<span class="text-xl font-semibold" style="color:white">Loan</span>
+			<span class="text-m" style="color:white">Manage loans</span>
 		</div>
 		<div class="flex gap-4 h-auto px-5 py-5 bg-white dark:bg-gray-800">
 			<div class="flex flex-col w-full h-auto ">
@@ -126,7 +133,7 @@
 					for="status"
 					class="block mb-2 pl-1 text-m font-semibold text-gray-900 dark:text-white">Status</label
 				>
-				<div class="grid grid-cols-9">
+				<div class="grid grid-cols-5">
 					<select
 						id="status"
 						bind:value={status}
@@ -140,11 +147,11 @@
 						<Button
 							extraClasses="mx-1 pr-4 pl-4 inline-flex items-center text-center font-semibold rounded-lg"
 							textColor="text-white"
-							hoverTitle="Apply Leave"
+							hoverTitle="Apply Loan"
 							textSize="text-sm"
 							bgColor="bg-green-700"
 							bgColorHover="bg-green-800"
-							on:click={handleleaveformModal}
+							on:click={handleLoanFormModal}
 							><svg
 								style="color: white"
 								xmlns="http://www.w3.org/2000/svg"
@@ -196,8 +203,8 @@
 	<div class="flex items-center justify-center h-fit mb-1 rounded bg-gray-50 dark:bg-gray-800">
 		<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 			<thead class="text-m  text-gray-700 border-b bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
-				<tr class="grid grid-cols-9">
-					<th scope="col" class="pl-6 py-3 flex">
+				<tr class="grid grid-cols-7">
+					<th scope="col" class="pl-3 py-3 flex">
 						CODE
 						<button
 							type="button"
@@ -218,7 +225,7 @@
 							</svg>
 						</button>
 					</th>
-					<th scope="col" class="pl-6 py-3 flex">
+					<th scope="col" class="pl-6 py-3 col-span-2 flex">
 						DESCRIPTION
 						<button
 							type="button"
@@ -239,12 +246,12 @@
 							</svg>
 						</button>
 					</th>
+					<th scope="col" class="pl-6 py-3 flex"> COMMENTS</th>
 					<th scope="col" class="pl-6 py-3 flex">
-						GROUP TYPE
-						<button
+						STATUS <button
 							type="button"
 							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('grouptype')}
+							on:click={() => handleSort('comments')}
 						>
 							<svg
 								fill="currentColor"
@@ -258,73 +265,10 @@
 									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
 								/>
 							</svg>
-						</button>
-					</th>
-					<th scope="col" class="pl-6 py-3 flex">
-						DATE TYPE
-						<button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('datetype')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button>
-					</th>
-					<th scope="col" class="pl-6 py-3 flex">
-						MAX DAYS
-						<button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('maxday')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button>
-					</th>
-					<th scope="col" class="pl-6 py-3 flex">
-						DATE BEFORE FILING
-						<button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('description')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button>
-					</th>
-					<th scope="col" class="pl-6 py-3 flex"> STATUS </th>
-					<th scope="col" class="px-6 py-3 col-span-2">
+						</button></th
+					>
+					<th scope="col" class="pl-6 py-3 flex"> ACTION </th>
+					<th scope="col" class="px-6 py-3 col-span-auto">
 						<div class="flex items-center justify-end ">
 							<label for="items" class="block text-m font-semibold text-gray-900 dark:text-white"
 								>Show</label
@@ -347,12 +291,12 @@
 			<tbody>
 				{#key paginatedItems}
 					{#if paginatedItems.length}
-						{#each paginatedItems as leave}
+						{#each paginatedItems as loan}
 							<tr
-								class="grid grid-cols-9 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+								class="grid grid-cols-7 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
 								on:mouseenter={() => {
-									if (currentLeave !== leave) {
-										currentLeave = leave;
+									if (currentLoan !== loan) {
+										currentLoan = loan;
 									}
 								}}
 							>
@@ -360,36 +304,51 @@
 									scope="row"
 									class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
 								>
-									<div class="text-m font-medium">{leave.code}</div>
+									<div class="text-m font-medium">{loan.code}</div>
 								</th>
-								<td class="flex items-center px-6 py-4 ">
-									<div class="text-m text-gray-700 font-medium">{leave.description}</div>
+								<td class="flex items-center px-6 py-4 col-span-2 flex">
+									<div class="text-m text-gray-700 font-medium">{loan.description}</div>
 								</td>
-								<td class="flex items-center px-6 py-4 ">
-									<div class="text-m text-gray-700 font-medium">{leave.grouptype}</div>
-								</td>
-								<td class="flex items-center px-6 py-4">
-									<div class="text-m text-gray-700 font-medium">{leave.datetype}</div>
-								</td>
-								<td class="flex items-center px-6 py-4">
-									<div class="text-m text-gray-700 font-medium">{leave.maxday}</div>
-								</td>
-								<td class="flex items-center px-6 py-4">
-									<div class="text-m text-gray-700 font-medium">{dateToString(leave.dbfiling)}</div>
+								<td class="flex items-center px-6 py-4 flex">
+									<div class="text-m text-gray-700 font-medium">{loan.comments}</div>
 								</td>
 								<td class="flex items-center px-6 py-4">
 									<div class="flex items-center ">
 										<div
-											class={leave.isActive
+											class={loan.isActive
 												? 'h-2.5 w-2.5 rounded-full bg-green-500 mr-2'
 												: 'h-2.5 w-2.5 rounded-full bg-red-500 mr-2'}
 										/>
 										<div class="text-sm text-gray-700 font-medium">
-											{leave.isActive ? 'Active' : 'Inactive'}
+											{loan.isActive ? 'Active' : 'Inactive'}
 										</div>
 									</div>
 								</td>
-								<td class="px-6 py-4 col-span-2">
+								<td class="px-4 py-4">
+									<Button
+										extraClasses="mx-1 pr-2 pl-4 inline-flex items-center text-center font-semibold rounded-full"
+										textSize="text-m"
+										hoverTitle="View"
+										textColor="text-white"
+										bgColor="bg-yellow-700"
+										bgColorHover="bg-yellow-800"
+										on:click={handleSubLoanViewModal}
+										
+									>
+										<svg
+											class="w-5 h-5 mr-2 dark:text-gray-400"
+											xmlns="http://www.w3.org/2000/svg" 
+											fill="None" 
+											viewBox="0 0 24 24" 
+											stroke-width="1.5" 
+											stroke="currentColor"
+										>
+											<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+											/>
+											<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+											/>
+									  </svg></Button
+									>
 									<Button
 										extraClasses="mx-1 pr-2 pl-4 inline-flex items-center text-center font-semibold rounded-full"
 										textSize="text-m"
@@ -397,7 +356,8 @@
 										textColor="text-white"
 										bgColor="bg-blue-700"
 										bgColorHover="bg-blue-800"
-										on:click={handleEditLeaveModal}
+										on:click={handleEditLoanModal}
+										
 									>
 										<svg
 											class="w-5 h-5 mr-2 dark:text-gray-400"
@@ -421,6 +381,7 @@
 										bgColor="bg-red-600"
 										bgColorHover="bg-red-700"
 										on:click={handleConfirmDeleteModal}
+										
 									>
 										<svg
 											class="w-5 h-5 mr-2 dark:text-gray-400 "
@@ -479,16 +440,18 @@
 		</table>
 	</div>
 </div>
-
-{#if isLeaveFormOpen}
-	<AddLeaveForm title={'Apply Leave'} bind:isLeaveFormOpen {loadLeave} />
+{#if isLoanFormOpen}
+	<AddLoanForm title={'Apply Loan'} bind:isLoanFormOpen {loadLoan} />
+{/if}
+{#if isSubloanViewOpen}
+	<SubLoanView title={currentLoan.code} bind:isSubloanViewOpen {loadLoan} />
 {/if}
 
-{#if currentLeaveExist}
-	{#if isEditLeaveOpen}
-		<EditLeaveForm title={'Edit Leave'} bind:isEditLeaveOpen bind:currentLeave {loadLeave} />
+{#if currentLoanExist}
+	{#if isEditLoanOpen}
+		<EditLoanForm title={'Edit Loan'} bind:isEditLoanOpen bind:currentLoan {loadLoan} />
 	{/if}
 	{#if isDeleteDataOpen}
-		<ConfirmDeleteLeave bind:isDeleteDataOpen bind:currentLeave {loadLeave} />
+		<ConfirmDeleteLoan bind:isDeleteDataOpen bind:currentLoan {loadLoan} />
 	{/if}
 {/if}
