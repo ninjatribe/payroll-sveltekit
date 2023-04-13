@@ -196,8 +196,8 @@
 									extraClasses="col-start-3 mx-2 pr-2 pl-2 inline-flex items-center text-center font-semibold rounded-lg"
 									textSize="text-xs"
 									textColor="text-white"
-									bgColor="bg-green-700"
-									bgColorHover="bg-green-900"
+									bgColor="bg-blue-700"
+									bgColorHover="bg-blue-800"
 								>
 									<svg
 										class="w-5 h-5 mr-1 dark:text-gray-400"
