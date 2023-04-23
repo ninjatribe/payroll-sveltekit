@@ -1,6 +1,7 @@
 <script>
 	// @ts-nocheck
 	import Button from '$lib/components/reusable/Button.svelte';
+	import { dataset_dev } from 'svelte/internal';
 
 	export let addModalOpen = false;
 	export let loadHolidays = () => {};
@@ -9,11 +10,15 @@
 	let holidayType = '';
 	let time = '';
 	let description = '';
+	let error = '';
 
 	const closeModal = () => (addModalOpen = false);
 
 	async function submitData(event) {
 		event?.preventDefault();
+		if (description === '') {
+			description = 'No Description';
+		}
 		const response = await fetch('/api/admin/holidays/insert', {
 			method: 'POST',
 			headers: {
@@ -26,8 +31,12 @@
 				description
 			})
 		});
-		let result = await response.json();
-		addModalOpen = false;
+		const result = await response.json();
+		if (result.error) {
+			error = alert(result.errorMessage) || 'An error occured';
+		} else {
+			addModalOpen = false;
+		}
 		if (result.status === 'Success') {
 			loadHolidays();
 		}
@@ -47,7 +56,7 @@
 				<form>
 					<div class="mb-4">
 						<label for="holiday-type" class="block text-gray-700 font-medium mb-2"
-							>Holiday Type</label
+							>Holiday Type<span class="text-red-500">*</span></label
 						>
 						<select
 							id="holiday-type"
@@ -62,26 +71,26 @@
 					</div>
 					<div class="flex justify-between">
 						<div class="w-1/2 mr-2">
-							<label for="vacancy" class="block text-gray-700 font-medium mb-2"
-								>Date(YYYY-MM-DD)</label
+							<label for="date" class="block text-gray-700 font-medium mb-2"
+								>Date(YYYY-MM-DD)<span class="text-red-500">*</span></label
 							>
 							<input
 								type="text"
-								id="vacancy"
-								name="vacancy"
+								id="date"
+								name="date"
 								bind:value={date}
 								class="block w-full p-2 text-m text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
 								required
 							/>
 						</div>
 						<div class="w-1/2 ml-2">
-							<label for="plantilla-item-no" class="block text-gray-700 font-medium mb-2"
-								>Time (If Work Suspension)</label
+							<label for="time" class="block text-gray-700 font-medium mb-2"
+								>Time (If Work Suspension)<span class="text-red-500">*</span></label
 							>
 							<input
 								type="text"
-								id="plantilla-item-no"
-								name="plantilla-item-no"
+								id="time"
+								name="time"
 								bind:value={time}
 								class="block w-full p-2 text-m text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
 								placeholder=" "

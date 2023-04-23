@@ -12,6 +12,7 @@
 	let description = '';
 	let time = '';
 	let holidayType = '';
+	let error = '';
 
 	function editValues() {
 		if (currentHoliday === undefined) {
@@ -47,8 +48,12 @@
 				holidayType
 			})
 		});
-		let result = await response.json();
-		editModalOpen = false;
+		const result = await response.json();
+		if (result.error) {
+			error = alert(result.errorMessage) || 'An error occured';
+		} else {
+			editModalOpen = false;
+		}
 		if (result.status === 'Success') {
 			loadHolidays();
 		}
@@ -66,7 +71,9 @@
 			class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full"
 		>
 			<div class="bg-gray-100 px-4 py-3 border-b">
-				<h4 class="text-lg font-medium text-gray-600">Add a Holiday</h4>
+				<h4 class="text-lg font-medium text-gray-600">
+					Add a Holiday<span class="text-red-500">*</span>
+				</h4>
 			</div>
 			<div class="px-4 py-5 sm:p-6">
 				<form>
@@ -88,7 +95,7 @@
 					<div class="flex justify-between">
 						<div class="w-1/2 mr-2">
 							<label for="vacancy" class="block text-gray-700 font-medium mb-2"
-								>Date(MM-DD-YYYY)</label
+								>Date(MM-DD-YYYY)<span class="text-red-500">*</span></label
 							>
 							<input
 								type="text"
@@ -102,7 +109,7 @@
 						</div>
 						<div class="w-1/2 ml-2">
 							<label for="plantilla-item-no" class="block text-gray-700 font-medium mb-2"
-								>Time (If Work Suspension)</label
+								>Time (If Work Suspension)<span class="text-red-500">*</span></label
 							>
 							<input
 								type="text"
@@ -173,6 +180,7 @@
 							>Close</Button
 						>
 					</div>
+					<div class="text-custom-red h-1">{error}</div>
 				</form>
 			</div>
 		</div>
