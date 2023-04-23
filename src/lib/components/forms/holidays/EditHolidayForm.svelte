@@ -71,15 +71,13 @@
 			class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full"
 		>
 			<div class="bg-gray-100 px-4 py-3 border-b">
-				<h4 class="text-lg font-medium text-gray-600">
-					Add a Holiday<span class="text-red-500">*</span>
-				</h4>
+				<h4 class="text-lg font-medium text-gray-600">Add a Holiday</h4>
 			</div>
 			<div class="px-4 py-5 sm:p-6">
 				<form>
 					<div class="mb-4">
 						<label for="holiday-type" class="block text-gray-700 font-medium mb-2"
-							>Holiday Type</label
+							>Holiday Type<span class="text-red-500">*</span></label
 						>
 						<select
 							id="holiday-type"
