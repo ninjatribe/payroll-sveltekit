@@ -42,6 +42,7 @@
 				empPlaceofBirth,
 				empSex,
 				empCivStatus,
+				empCivService,
 				empWorkExperience,
 				empCharityWork,
 				empLearningAndDevelopment,
