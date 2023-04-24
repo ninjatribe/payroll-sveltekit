@@ -28,36 +28,34 @@
 	$: {
 		// Prevent user to input below the minimum or beyond the maximum value of pagesize.
 		if (pageSize < 1) pageSize = 1;
-		// reactive statement to automatically filter data based on status.
 		paginatedItems = search
 			? items.filter((holiday) => {
-					const monthRegex = month === 'all' ? /.*/ : RegExp(month, 'gi');
 					const searchRegex = RegExp(search, 'gi');
-					const date = new Date(holiday.date);
-					return status !== 'all'
-						? date.getMonth().toString().match(monthRegex) &&
-								(holiday.date.match(searchRegex) ||
-									holiday.description.match(searchRegex) ||
-									holiday.holidayType.match(searchRegex)) &&
-								holiday.status === (status === 'active')
-						: date.getMonth().toString().match(monthRegex) &&
-								(holiday.date.match(searchRegex) ||
-									holiday.description.match(searchRegex) ||
-									holiday.holidayType.match(searchRegex));
+					const [yearStr, monthStr, dayStr] = holiday.date.split('-');
+					const monthNum = parseInt(monthStr) - 1;
+					const date = new Date(yearStr, monthNum, dayStr);
+					return (
+						(status === 'all' || holiday.status === (status === 'active')) &&
+						(holiday.date.match(searchRegex) ||
+							holiday.description.match(searchRegex) ||
+							holiday.holidayType.match(searchRegex))
+					);
 			  })
 			: items.filter((holiday) => {
-					const monthRegex = month === 'all' ? /.*/ : RegExp(month, 'gi');
-					const date = new Date(holiday.date);
-					return status !== 'all'
-						? holiday.status === (status === 'active') &&
-								date.getMonth().toString().match(monthRegex)
-						: date.getMonth().toString().match(monthRegex);
+					const [yearStr, monthStr, dayStr] = holiday.date.split('-');
+					const monthNum = parseInt(monthStr) - 1;
+					const date = new Date(yearStr, monthNum, dayStr);
+					return (
+						(status === 'all' || holiday.status === (status === 'active')) &&
+						(month === 'all' || monthNum === parseInt(month))
+					);
 			  });
 
 		if (paginatedItems.length) {
 			itemSize = paginatedItems.length;
 			paginatedItems = paginate({ items: paginatedItems, pageSize, currentPage });
 		}
+
 		pageMinIndex = paginatedItems.length == 0 ? 0 : 1 + (currentPage - 1) * pageSize;
 		pageMaxIndex =
 			pageSize * currentPage > itemSize ? paginatedItems.length : pageSize * currentPage;
@@ -152,7 +150,7 @@
 						class=" bg-gray-50 border border-gray-300 font-semibold text-gray-900 text-sm rounded-lg mr-2 focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 					>
 						<option class="text-sm font-semibold" value="all" selected>All</option>
-						<option class="text-sm font-semibold" value="0"> January</option>
+						<option class="text-sm font-semibold" value="0">January</option>
 						<option class="text-sm font-semibold" value="1">February</option>
 						<option class="text-sm font-semibold" value="2">March</option>
 						<option class="text-sm font-semibold" value="3">April</option>
@@ -477,5 +475,3 @@
 		<DeleteHolidayForm bind:deleteModalOpen bind:currentHoliday {loadHolidays} />
 	{/if}
 {/if}
-
-

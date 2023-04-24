@@ -17,6 +17,7 @@
 	let vacancy = '';
 	let plantillaItemNo = '';
 	let remarks = '';
+	let error = '';
 
 	function editValues() {
 		if (currentPosition === undefined) {
@@ -76,8 +77,12 @@
 				remarks
 			})
 		});
-		let result = await response.json();
-		editModalOpen = false;
+		const result = await response.json();
+		if (result.error) {
+			error = alert(result.errorMessage) || 'An error occured';
+		} else {
+			editModalOpen = false;
+		}
 		if (result.status === 'Success') {
 			loadPositions();
 		}
@@ -99,7 +104,9 @@
 			</div>
 			<div class="px-4 py-5 sm:p-6">
 				<div class="mb-4">
-					<label for="pay-basis" class="block text-gray-700 font-medium mb-2">Pay Basis</label>
+					<label for="pay-basis" class="block text-gray-700 font-medium mb-2"
+						>Pay Basis<span class="text-red-500">*</span></label
+					>
 					<select
 						id="pay-basis"
 						name="pay-basis"
@@ -114,7 +121,7 @@
 				</div>
 				<div class="mb-4">
 					<label for="position-name" class="block text-gray-700 font-medium mb-2"
-						>Position Name</label
+						>Position Name<span class="text-red-500">*</span></label
 					>
 					<input
 						type="text"
@@ -125,7 +132,9 @@
 					/>
 				</div>
 				<div class="mb-4">
-					<label for="position-name" class="block text-gray-700 font-medium mb-2">Code</label>
+					<label for="position-name" class="block text-gray-700 font-medium mb-2"
+						>Code<span class="text-red-500">*</span></label
+					>
 					<input
 						type="text"
 						id="code"
@@ -137,7 +146,7 @@
 				<div class="flex justify-between">
 					<div class="w-1/2 mr-2">
 						<label for="salary-grade" class="block text-gray-700 font-medium mb-2"
-							>Salary Grade</label
+							>Salary Grade<span class="text-red-500">*</span></label
 						>
 						<select
 							id="salary-grade"
@@ -158,7 +167,7 @@
 					</div>
 					<div class="w-1/2 ml-2">
 						<label for="salary-grade-step" class="block text-gray-700 font-medium mb-2"
-							>Salary Grade Step</label
+							>Salary Grade Step<span class="text-red-500">*</span></label
 						>
 						<select
 							id="salary-grade-step"
@@ -175,7 +184,7 @@
 				</div>
 				<div class="mb-4">
 					<label for="position-state" class="block text-gray-700 font-medium mb-2"
-						>Position State</label
+						>Position State<span class="text-red-500">*</span></label
 					>
 					<select
 						id="position-state"
@@ -200,7 +209,7 @@
 					</div>
 					<div class="w-1/2 ml-2">
 						<label for="plantilla-item-no" class="block text-gray-700 font-medium mb-1"
-							>Plantilla Item No.</label
+							>Plantilla Item No.<span class="text-red-500">*</span></label
 						>
 						<input
 							type="text"
@@ -212,7 +221,9 @@
 					</div>
 				</div>
 
-				<h2 class="text-sm font-bold text-red-900 dark:text-red mt-6 mb-2">NOTE:</h2>
+				<h2 class="text-sm font-bold text-red-900 dark:text-red mt-6 mb-2">
+					NOTE:<span class="text-red-500">*</span>
+				</h2>
 				<ul
 					class="max-w-md space-y-1 text-red-500 text-s list-none list-inside dark:text-red-400
 						mb-6"
