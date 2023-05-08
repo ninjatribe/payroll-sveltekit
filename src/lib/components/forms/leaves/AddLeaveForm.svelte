@@ -12,7 +12,7 @@
 		maxday = '',
 		dbfiling = '';
 
-	function toggleLeaveForm() {
+	function handleCloseForm() {
 		isLeaveFormOpen = !isLeaveFormOpen;
 	}
 
@@ -142,44 +142,39 @@
 						</div>
 
 						<div class="text-center">
-							<div class="grid grid-cols-2">
-								<Button
-									type="submit"
-									extraClasses="col-start-3 mx-5 pr-2 pl-2 inline-flex items-center text-center font-semibold rounded-lg"
-									textSize="text-xs"
-									textColor="text-white"
-									bgColor="bg-green-700"
-									bgColorHover="bg-green-900"
-								>
-									<svg
-										class="w-5 h-5 mr-1 dark:text-gray-400"
-										fill="none"
-										stroke="currentColor"
-										stroke-width="2"
-										viewBox="0 0 24 24"
-										aria-hidden="true"
-										><path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M12 4.5v15m7.5-7.5h-15"
-										/></svg
-									>
-									Submit
-								</Button>
+							<div class="grid grid-cols-4 grid-rows-2">
+                                <Button 
+                                    type="submit"
+                                    extraClasses="col-start-3 row-start-2 mx-4 pr-2 pl-2 inline-flex items-center text-center font-semibold rounded-lg" 
+                                    textSize="text-xs" 
+                                    textColor="text-white" 
+                                    bgColor="bg-blue-700" 
+                                    bgColorHover="bg-blue-800"
+                                    >
+                                    <svg class="w-5 h-5 mr-1 dark:text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path></svg>
+                                    Add
+                                </Button>
+                                <Button 
+                                    extraClasses="col-start-4 row-start-2 mx-1 pr-2 pl-2 pt-2 pb-2 inline-flex items-center text-center font-semibold rounded-lg" 
+                                    textSize="text-xs" 
+                                    textColor="text-gray-900" 
+                                    bgColor="bg-white" 
+                                    bgColorHover="bg-gray-100" 
+                                    borderColor="border-gray-300" 
+                                    borderColorHover="border-none" 
+                                    on:click={handleCloseForm}
+                                    >
+                                    <svg class="w-5 h-5 mr-1 dark:text-gray-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path clip-rule="evenodd" fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"></path>
+                                    </svg>
+                                    Close
+                                </Button>
 							</div>
 						</div>
 					</form>
 				</div>
 			</div>
-			<div class="p-2 bg-gray-100 text-right">
-				<button
-					type="button"
-					class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 border border-transparent rounded-md hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-					on:click={toggleLeaveForm}
-				>
-					Close
-				</button>
-			</div>
+
 		</div>
 	</div>
 </div>
