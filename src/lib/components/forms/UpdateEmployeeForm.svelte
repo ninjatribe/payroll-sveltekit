@@ -66,7 +66,7 @@
         emp_file = currentEmployee.emp_file;
     }
 
-    const handleClose = () => isUpdateEmployeeModalopen = false;
+    const handleClose = () => (isUpdateEmployeeModalopen = false);
 
     async function handleSubmit(event){
         console.log("HANDLE SUBMIT WORKS");
@@ -77,6 +77,7 @@
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                _id,
                 emp_picture,
                 empNo,
                 empScanNo,
