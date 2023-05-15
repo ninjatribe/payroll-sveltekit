@@ -114,7 +114,7 @@
 							<div class="grid grid-cols-4 grid-rows-2">
                                 <Button 
                                     type="submit"
-                                    extraClasses="col-start-3 row-start-2 mx-3 pr-2 pl-2 inline-flex items-center text-center font-semibold rounded-lg" 
+                                    extraClasses="col-start-3 row-start-2 mx-4 pr-2 pl-2 inline-flex items-center text-center font-semibold rounded-lg" 
                                     textSize="text-xs" 
                                     textColor="text-white" 
                                     bgColor="bg-blue-700" 
