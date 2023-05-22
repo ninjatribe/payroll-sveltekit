@@ -8,16 +8,18 @@
 	export let currentLeave;
 	export let loadLeave = () => {};
 
-	let code = '',
-		description = '',
-		grouptype = '',
-		datetype = '',
-		maxday = '',
-		dbfiling = '';
+	let _id = '';
+	let code = '';
+	let description = '';
+	let	grouptype = '';
+	let	datetype = '';
+	let	maxday = '';
+	let	dbfiling = '';
 
 	function setEditValues() {
 		if (currentLeave === undefined) {
 			currentLeave = [
+				{ _id: 'NA' },
 				{ code: 'NA' },
 				{ description: 'NA' },
 				{ grouptype: 'NA' },
@@ -26,6 +28,7 @@
 				{ dbfiling: 'NA' }
 			];
 		}
+		_id = currentLeave._id;
 		code = currentLeave.code;
 		description = currentLeave.description;
 		grouptype = currentLeave.grouptype;
@@ -37,12 +40,6 @@
 	const handleCloseForm = () => (isEditLeaveOpen = false);
 
 	async function handleSubmit(event) {
-		console.log(code);
-		console.log(description);
-		console.log(grouptype);
-		console.log(datetype);
-		console.log(maxday);
-		console.log(dbfiling);
 		event?.preventDefault();
 		const response = await fetch('/api/admin/leave/update', {
 			method: 'POST',
@@ -50,6 +47,7 @@
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
+				_id,
 				code,
 				description,
 				grouptype,
@@ -58,8 +56,12 @@
 				dbfiling
 			})
 		});
-		let result = await response.json();
-		isEditLeaveOpen = false;
+		const result = await response.json();
+		if (result.error) {
+			error = alert(result.errorMessage) || 'An error occured';
+		} else {
+			isEditLeaveOpen = false;
+		}
 		if (result.status === 'Success') {
 			loadLeave();
 		}
@@ -179,9 +181,10 @@
                                     textColor="text-white" 
                                     bgColor="bg-blue-700" 
                                     bgColorHover="bg-blue-800"
+		
                                     >
                                     <svg class="w-5 h-5 mr-1 dark:text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path></svg>
-                                    Add
+                                    Update
                                 </Button>
                                 <Button 
                                     extraClasses="col-start-4 row-start-2 mx-1 pr-2 pl-2 pt-2 pb-2 inline-flex items-center text-center font-semibold rounded-lg" 

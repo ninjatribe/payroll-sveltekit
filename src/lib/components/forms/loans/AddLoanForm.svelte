@@ -26,10 +26,13 @@
 				comments
 			})
 		});
-		let result = await response.json();
-		isLoanFormOpen = false;
+		const result = await response.json();
+		if (result.error) {
+			error = alert(result.errorMessage) || 'An error occured';
+		} else {
+			isLoanFormOpen = false;
+		}
 		if (result.status === 'Success') {
-			console.log('Success');
 			loadLoan();
 		}
 	}
