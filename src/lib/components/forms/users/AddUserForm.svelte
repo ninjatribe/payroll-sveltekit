@@ -3,9 +3,9 @@
 	export let title;
 	export let addModalOpen = false;
 	export let loadUsers = () => {};
-	// import bcrypt from 'bcryptjs';
 	import { SHA256 } from 'crypto-js';
-
+	let message = null;
+	let alertColor = 'green';
 	let firstName = '',
 		lastName = '',
 		username = '',
@@ -13,12 +13,21 @@
 		phone = '',
 		province = '',
 		country = '',
-		password = '';
+		password = '',
+		confirmPassword = '';
 
 	const closeModal = () => (addModalOpen = false);
 
 	async function handleSubmit(event) {
 		event?.preventDefault();
+		if (password !== confirmPassword) {
+			message = 'Passwords do not match';
+			alertColor = 'red';
+			setTimeout(() => {
+				message = null;
+			}, 3000);
+			return;
+		}
 
 		// const salt = await bcrypt.genSalt(saltCount);
 		const hashedPassword = await SHA256(password).toString();
@@ -100,6 +109,18 @@
 								id="password"
 								name="password"
 								bind:value={password}
+								class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+							/>
+						</div>
+						<div class="mb-4">
+							<label for="password" class="block mb-2 font-bold text-gray-700"
+								>Confirm Password:</label
+							>
+							<input
+								type="password"
+								id="password"
+								name="password"
+								bind:value={confirmPassword}
 								class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
 							/>
 						</div>
