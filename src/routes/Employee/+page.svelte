@@ -5,6 +5,7 @@
 	import { log } from "xstate/lib/actions";
 	import { paginate } from "svelte-paginate";
     import UpdateEmployeeForm from "$lib/components/forms/UpdateEmployeeForm.svelte";
+	import DeleteEmployeeform from "$lib/components/forms/DeleteEmployeeform.svelte";
 
     //loads user data
     let items = [];
@@ -49,6 +50,7 @@
     //handles modals
     let isAddEmployeeModalopen = false;
     let isUpdateEmployeeModalopen = false;
+    let isDeleteEmployeeModalOpen = false;
 
     function currentEmployeeExists()
     {
@@ -102,6 +104,7 @@
 
     const handleOpenModalAddEmployees = () => isAddEmployeeModalopen = !isAddEmployeeModalopen
     const handleOPenModalUpdateEmployees = () => isUpdateEmployeeModalopen = !isUpdateEmployeeModalopen
+    const handleOpenModalDeleteEmployees = () => isDeleteEmployeeModalOpen = !isDeleteEmployeeModalOpen
 </script>
 
 <!--Main page-->
@@ -199,7 +202,7 @@
                         <td class="flex items-center px-6 py-4">
                             <button
                             class="mx-1 pl-4 inline-flex items-center text-center font-serif rounded-lg text-sm bg-blue-600" on:click={handleOPenModalUpdateEmployees}>Update</button>
-                            <button class = "pl-2 text-sm bg-red-600 rounded-lg">Delete</button>
+                            <button class = "pl-2 text-sm bg-red-600 rounded-lg" on:click={handleOpenModalDeleteEmployees}>Delete</button>
                         </td>
                     </tr>
                     {/each}
@@ -237,5 +240,8 @@
 {#if currentEmployeeExists}
  {#if isUpdateEmployeeModalopen}
     <UpdateEmployeeForm bind:isUpdateEmployeeModalopen bind:currentEmployee title = "Update Employee" {loadEmployees}/>
+ {/if}
+ {#if isDeleteEmployeeModalOpen}
+    <DeleteEmployeeform bind:isDeleteEmployeeModalOpen bind:currentEmployee {loadEmployees}/>
  {/if}
 {/if}
