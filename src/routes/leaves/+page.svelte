@@ -7,6 +7,7 @@
 	import ConfirmDeleteLeave from '$lib/components/forms/leaves/ConfirmDeleteLeave.svelte';
 	import Button from '$lib/components/reusable/Button.svelte';
 	import dateToString from '$lib/utils/dateHelper';
+	import Sort from "$lib/components/reusable/Sort.svelte";
 
 	let status = 'all';
 	let search;
@@ -194,152 +195,49 @@
 		</div>
 	</div>
 	<div class="flex items-center justify-center h-fit mb-1 rounded bg-gray-50 dark:bg-gray-800">
-		<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+		<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 table-auto">
 			<thead class="text-m  text-gray-700 border-b bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
-				<tr class="grid grid-cols-9">
-					<th scope="col" class="pl-6 py-3 flex">
-						CODE
-						<button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('code')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button>
+				<tr>
+					<th scope="col" class="pl-6">
+                        CODE
+						<Sort on:click={() => handleSort('code')}/>
 					</th>
-					<th scope="col" class="pl-6 py-3 flex">
-						DESCRIPTION
-						<button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('description')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button>
+					<th scope="col" class="pl-6">
+                        DESCRIPTION
+						<Sort on:click={() => handleSort('description')} />
 					</th>
-					<th scope="col" class="pl-6 py-3 flex">
-						GROUP TYPE
-						<button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('grouptype')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button>
+                    <th scope="col" class="pl-6">
+                        GROUP TYPE
+						<Sort on:click={() => handleSort('grouptype')} />
 					</th>
-					<th scope="col" class="pl-6 py-3 flex">
-						DATE TYPE
-						<button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('datetype')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button>
-					</th>
-					<th scope="col" class="pl-6 py-3 flex">
-						MAX DAYS
-						<button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('maxday')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button>
-					</th>
-					<th scope="col" class="pl-6 py-3 flex">
-						DATE BEFORE FILING
-						<button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => handleSort('description')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button>
-					</th>
-					<th scope="col" class="pl-6 py-3 flex"> STATUS </th>
-					<th scope="col" class="px-6 py-3 col-span-2">
-						<div class="flex items-center justify-end ">
+					<th scope="col" class="pl-6">
+                        DATE TYPE 
+                        <Sort on:click={() => handleSort('datetype')} />		
+                    </th>
+					<th scope="col" class="pl-6">
+                        MAX DAYS 
+                        <Sort on:click={() => handleSort('maxday')} />		
+                    </th>
+					<th scope="col" class="pl-6">
+                        DATE BEFORE FILING 
+                        <Sort on:click={() => handleSort('dbfiling')} />		
+                    </th>
+					<th scope="col" class="pl-6">
+                        STATUS		
+                    </th>
+					<th scope="col" class="pl-6">
+						<div class="flex gap-2 w-max">
 							<label for="items" class="block text-m font-semibold text-gray-900 dark:text-white"
-								>Show</label
+								>No. of Entries</label
 							>
 							<input
 								type="number"
 								id="items"
 								bind:value={pageSize}
 								on:change={handleOverFlow}
-								class="w-14 h-4 text-sm text-center text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600"
+								class="w-16 h-4 text-sm text-center text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600"
 								placeholder=" "
 							/>
-							<label for="items" class="block text-m font-semibold text-gray-900 dark:text-white"
-								>entries</label
-							>
 						</div>
 					</th>
 				</tr>
@@ -349,33 +247,32 @@
 					{#if paginatedItems.length}
 						{#each paginatedItems as leave}
 							<tr
-								class="grid grid-cols-9 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+								class=" bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
 								on:mouseenter={() => {
 									if (currentLeave !== leave) {
 										currentLeave = leave;
 									}
 								}}
 							>
-								<th
-									scope="row"
-									class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+								<td
+									class="px-6 py-4 text-gray-700 whitespace-nowrap dark:text-white text-m font-medium"
 								>
-									<div class="text-m font-medium">{leave.code}</div>
-								</th>
-								<td class="flex items-center px-6 py-4 ">
-									<div class="text-m text-gray-700 font-medium">{leave.description}</div>
+									{leave.code || ''}
+                                </td>
+								<td class="px-6 py-4 text-gray-700 whitespace-nowrap dark:text-white text-m font-medium">
+									{leave.description || ''}
 								</td>
-								<td class="flex items-center px-6 py-4 ">
-									<div class="text-m text-gray-700 font-medium">{leave.grouptype}</div>
+								<td class="px-6 py-4 text-gray-700 whitespace-nowrap dark:text-white text-m font-medium">
+									{leave.grouptype || ''}
 								</td>
-								<td class="flex items-center px-6 py-4">
-									<div class="text-m text-gray-700 font-medium">{leave.datetype}</div>
+								<td class="px-6 py-4 text-gray-700 whitespace-nowrap dark:text-white text-m font-medium">
+									{leave.datetype || ''}
 								</td>
-								<td class="flex items-center px-6 py-4">
-									<div class="text-m text-gray-700 font-medium">{leave.maxday}</div>
+								<td class="px-6 py-4 text-gray-700 whitespace-nowrap dark:text-white text-m font-medium">
+									{leave.maxday || ''}
 								</td>
-								<td class="flex items-center px-6 py-4">
-									<div class="text-m text-gray-700 font-medium">{dateToString(leave.dbfiling)}</div>
+								<td class="px-6 py-4 text-gray-700 whitespace-nowrap dark:text-white text-m font-medium">
+									{dateToString(leave.dbfiling) || ''}
 								</td>
 								<td class="flex items-center px-6 py-4">
 									<div class="flex items-center ">
@@ -389,7 +286,7 @@
 										</div>
 									</div>
 								</td>
-								<td class="px-6 py-4 col-span-2">
+								<td class="px-6 py-4 col-span-3">
 									<Button
 										extraClasses="mx-1 pr-2 pl-4 inline-flex items-center text-center font-semibold rounded-full"
 										textSize="text-m"
