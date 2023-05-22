@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	export let title;
+	// export let title;
 	export let addModalOpen = false;
 	export let loadUsers = () => {};
 	import { SHA256 } from 'crypto-js';
@@ -67,9 +67,7 @@
 			aria-labelledby="modal-headline"
 		>
 			<div class="p-6">
-				<h2 class="text-lg font-medium leading-6 text-gray-900" id="modal-headline">
-					{title}
-				</h2>
+				<h2 class="text-lg font-medium leading-6 text-gray-900" id="modal-headline">Add User</h2>
 				<div class="mt-4">
 					<form class="max-w-lg mx-auto" on:submit={handleSubmit}>
 						<div class="mb-4">
