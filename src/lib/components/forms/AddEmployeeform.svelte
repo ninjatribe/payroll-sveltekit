@@ -42,6 +42,7 @@
 				empPlaceofBirth,
 				empSex,
 				empCivStatus,
+				empCivService,
 				empWorkExperience,
 				empCharityWork,
 				empLearningAndDevelopment,
@@ -142,6 +143,7 @@
 								id="emp_picture"
 								bind:value={emp_picture}
 								name="emp_picture_upload"
+								class="pt-24"
 								required
 							/>
 							<div />
@@ -201,7 +203,7 @@
 								id="fname"
 								name="fname"
 								bind:value={empFullName.firstName}
-								class="text-lg"
+								class="text-lg mr-3"
 								required
 							/>
 							<input
@@ -209,7 +211,7 @@
 								id="lname"
 								name="lname"
 								bind:value={empFullName.lastName}
-								class="text-lg"
+								class="text-lg mr-3"
 								required
 							/>
 							<input
@@ -217,7 +219,7 @@
 								id="sname"
 								name="sname"
 								bind:value={empFullName.surName}
-								class="text-lg"
+								class="text-lg mr-3"
 								required
 							/>
 							<input
@@ -225,7 +227,7 @@
 								id="exName"
 								name="exName"
 								bind:value={empFullName.extendName}
-								class="text-lg"
+								class="text-lg mr-3"
 								required
 							/>
 						</div>
@@ -236,17 +238,17 @@
 								id="dateOfBirth"
 								placeholder="dd/mm/yyyy"
 								bind:value={empDateofBirth}
-								class="text-lg border-b-2 shadow appearance-none border-blue-600"
+								class="text-m border-b-2 shadow appearance-none"
 								required
 							/>
 
-							<label for="placeOfBirth" class="text-lg ml-4 mr-4 pl-80">Place of Birth</label>
+							<label for="placeOfBirth" class="text-lg ml-16 pl-80">Place of Birth</label>
 
 							<input
 								type="text"
 								id="placeOfBirth"
 								bind:value={empPlaceofBirth}
-								class="text-lg border-b-2 shadow appearance-none border-blue-600"
+								class="text-m border-b-2 shadow appearance-none ml-3"
 								required
 							/>
 						</div>
@@ -256,7 +258,7 @@
 								type="text"
 								id="sex"
 								bind:value={empSex}
-								class="text-lg border-b-2 shadow appearance-none border-blue-600"
+								class="text-m border-b-2 shadow appearance-none  ml-16"
 								required
 							/>
 
@@ -265,7 +267,7 @@
 								type="text"
 								id="civilStatus"
 								bind:value={empCivStatus}
-								class="text-lg border-b-2 shadow appearance-none border-blue-600"
+								class="text-m border-b-2 shadow appearance-none "
 								required
 							/>
 						</div>
@@ -273,19 +275,19 @@
 						<!--Civil Service form-->
 						<div class="border-b-2 border-black w-auto h-auto bg-white">
 							<div class="py-4 text-2xl font-serif">IV. Civil Service Elgibility</div>
-							<div class="p-3 border-2 border-black">
-								<div class="grid grid-cols-8 h-auto w-full overflow-x-auto pb-5">
-									<div class="border-2 border-black p-2">
+							<div class="p-3 border-2 border-black w-full">
+								<div class="grid grid-cols-8 h-auto w-full overflow-x-scroll pb-5">
+									<div class="border-2 border-gray-600 p-2 text-center">
 										CAREER SERVICE/ RA 1080 under special laws / CES /CSEE / BARANGAY ELIGIBILITY/
 										DRIVERS LISCENCE
 									</div>
-									<div class="border-2 border-black p-2 pl-8">RATING</div>
-									<div class="border-2 border-black p-2">DATE OF EXAMINATION/ CONFERMENT</div>
-									<div class="border-2 border-black p-2">Place of Examination/ CONFERMENT</div>
-									<div class="border-2 border-black p-2">LISCENCE</div>
-									<div class="border-2 border-black p-2">LISCENCE NUMBER</div>
-									<div class="border-2 border-black p-2">DATE OF VALIDITY</div>
-									<div class="border-2 border-black p-2">ACTION</div>
+									<div class="border-2 border-gray-600 p-2 text-center">RATING</div>
+									<div class="border-2 border-gray-600 p-2 text-center">DATE OF EXAMINATION/ CONFERMENT</div>
+									<div class="border-2 border-gray-600 p-2 text-center">Place of Examination/ CONFERMENT</div>
+									<div class="border-2 border-gray-600 p-2 text-center">LISCENCE</div>
+									<div class="border-2 border-gray-600 p-2 text-center">LISCENCE NUMBER</div>
+									<div class="border-2 border-gray-600 p-2 text-center">DATE OF VALIDITY</div>
+									<div class="border-2 border-gray-600 p-2 text-center">ACTION</div>
 									<input
 										type="text"
 										id="carService"
@@ -349,14 +351,14 @@
 						<div class="border-b-2 border-black w-auto h-auto bg-white">
 							<div class="py-4 text-2xl font-serif">V.Work Experience</div>
 							<div class="p-3 border-2 border-black">
-								<div class="grid grid-cols-7 h-auto w-full overflow-x-auto pb-5">
-									<div class="border-2 border-black p-2">Postion Title</div>
-									<div class="border-2 border-black p-2">DEPARTMENT/ AGENCY/ OFFICE</div>
-									<div class="border-2 border-black p-2">MONTHLY SALARY</div>
-									<div class="border-2 border-black p-2">SALARY / JOB / PAY GRADE</div>
-									<div class="border-2 border-black p-2">STATUS OF APPOINTMENT</div>
-									<div class="border-2 border-black p-2">GOV'T SERVICE</div>
-									<div class="border-2 border-black p-2">ACTION</div>
+								<div class="grid grid-cols-7 h-auto w-full pb-5">
+									<div class="border-2 border-gray-600 p-2 text-center">Postion Title</div>
+									<div class="border-2 border-gray-600 p-2 text-center">DEPARTMENT/ AGENCY/ OFFICE</div>
+									<div class="border-2 border-gray-600 p-2 text-center">MONTHLY SALARY</div>
+									<div class="border-2 border-gray-600 p-2 text-center">SALARY / JOB / PAY GRADE</div>
+									<div class="border-2 border-gray-600 p-2 text-center">STATUS OF APPOINTMENT</div>
+									<div class="border-2 border-gray-600 p-2 text-center">GOV'T SERVICE</div>
+									<div class="border-2 border-gray-600 p-2 text-center">ACTION</div>
 									<input
 										type="text"
 										id="prevPosTitle"
@@ -415,15 +417,17 @@
 								VI. Voluntary work or involvement in Civic/Non Government/ People/ Voluntary
 								Organization/s
 							</div>
-							<div class="p-3 border-2 border-black">
-								<div class="grid grid-cols-7 h-auto w-full overflow-x-auto pb-5">
-									<div class="border-2 border-black p-2">NAME & ADDRESS OF ORGANIZATIONS</div>
-									<div class="border-2 border-black p-2">INCLUSIVE DATES OF ATTENDANCE</div>
-									<div class="border-2 border-black p-2">FROM</div>
-									<div class="border-2 border-black p-2">TO</div>
-									<div class="border-2 border-black p-2">NUMBER OF HOURS</div>
-									<div class="border-2 border-black p-2">POSITION/NATURE OF WORK</div>
-									<div class="border-2 border-black p-2">ACTION</div>
+							<div class="p-3 border-2 border-gray-600">
+								<div class="grid grid-cols-6 h-auto w-full pb-5">
+									<div class="border-2 border-gray-600 p-2 text-center">NAME & ADDRESS OF ORGANIZATIONS</div>
+									<div class="grid grid-cols-2 col-span-2">
+										<div class = "col-span-2 border-gray-600 border-2 text-center">INCLUSIVE DATES OF ATTENDANCE</div>
+										<div class = "border-2 border-gray-600 text-center">FROM</div>
+										<div class = "border-2 border-gray-600 text-center">TO</div>
+									</div>
+									<div class="border-2 border-gray-600 p-2 text-center">NUMBER OF HOURS</div>
+									<div class="border-2 border-gray-600 p-2 text-center">POSITION/NATURE OF WORK</div>
+									<div class="border-2 border-gray-600 p-2 text-center">ACTION</div>
 									<input
 										type="text"
 										id="nameOfCharityOrganization"
@@ -431,7 +435,6 @@
 										class="text-lg"
 										required
 									/>
-									<div />
 									<input
 										type="text"
 										id="charityAttendDateFrom"
@@ -477,24 +480,25 @@
 								VII. LEARNING AND DEVELOPMENT INTERVENTIONS/TRAINING PROGRAMS ATTENDED
 							</div>
 							<div class="p-3 border-2 border-black">
-								<div class="grid grid-cols-8 h-auto w-full overflow-x-auto pb-5">
-									<div class="border-2 border-black p-2">
+								<div class="grid grid-cols-7 h-auto w-full overflow-x-scroll pb-5">
+									<div class="border-2 border-gray-600 p-2">
 										TITLE OF LEARNING AND DEVELOPMENT INTERVENTIONS/ TRAINING PROGRAMS
 									</div>
-									<div class="border-2 border-black p-2">INCLUSIVE DATES OF ATTENDANCE</div>
-									<div class="border-2 border-black p-2">FROM</div>
-									<div class="border-2 border-black p-2">TO</div>
-									<div class="border-2 border-black p-2">NUMBER OF HOURS</div>
-									<div class="border-2 border-black p-2">TYPE OF L&D</div>
-									<div class="border-2 border-black p-2">CONDUCTED/ SPONSORED BY</div>
-									<div class="border-2 border-black p-2">Action</div>
+									<div class="grid grid-cols-2 col-span-2">
+										<div class = "col-span-2 border-gray-600 border-2 text-center">INCLUSIVE DATES OF ATTENDANCE</div>
+										<div class = "border-2 border-gray-600 text-center pt-8">FROM</div>
+										<div class = "border-2 border-gray-600 text-center pt-8">TO</div>
+									</div>
+									<div class="border-2 border-gray-600 p-2 text-center">NUMBER OF HOURS</div>
+									<div class="border-2 border-gray-600 p-2 text-center">TYPE OF L&D</div>
+									<div class="border-2 border-gray-600 p-2 text-center">CONDUCTED/ SPONSORED BY</div>
+									<div class="border-2 border-gray-600 p-2 text-center">Action</div>
 									<input
 										type="text"
 										id="ldProgram"
 										bind:value={empLearningAndDevelopment.trainingPrograms}
 										class="text-lg"
 									/>
-									<div />
 									<input
 										type="text"
 										id="ldAttendDateFrom"
@@ -543,10 +547,10 @@
 							</div>
 						</div>
 						<!--page 4-->
-						<div class="border-b-2 border-black w-auto h-auto">
+						<div class="w-auto h-auto">
 							<div class="py-4 text-2xl font-serrif">Attachments</div>
 							<div
-								class="grid grid-cols-3 h-auto w-full overflow-x-auto pb-5 border-2 border-black"
+								class="grid grid-cols-3 h-auto w-full overflow-x-auto pb-5"
 							>
 								<div class="border-2 border-black p-2 text-center">FILE TITLE</div>
 								<div class="border-2 border-black p-2 text-center">FILE UPLOAD</div>

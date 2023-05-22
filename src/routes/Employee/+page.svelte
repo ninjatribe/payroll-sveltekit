@@ -5,6 +5,7 @@
 	import { log } from "xstate/lib/actions";
 	import { paginate } from "svelte-paginate";
     import UpdateEmployeeForm from "$lib/components/forms/UpdateEmployeeForm.svelte";
+	import DeleteEmployeeform from "$lib/components/forms/DeleteEmployeeform.svelte";
 
     //loads user data
     let items = [];
@@ -49,6 +50,7 @@
     //handles modals
     let isAddEmployeeModalopen = false;
     let isUpdateEmployeeModalopen = false;
+    let isDeleteEmployeeModalOpen = false;
 
     function currentEmployeeExists()
     {
@@ -102,43 +104,40 @@
 
     const handleOpenModalAddEmployees = () => isAddEmployeeModalopen = !isAddEmployeeModalopen
     const handleOPenModalUpdateEmployees = () => isUpdateEmployeeModalopen = !isUpdateEmployeeModalopen
+    const handleOpenModalDeleteEmployees = () => isDeleteEmployeeModalOpen = !isDeleteEmployeeModalOpen
 </script>
 
 <!--Main page-->
-<div class = "p-3 bg-slate-900 w-full h-screen rounded-m">
-    <div class = "p-3 bg-blue-600 h-auto rounded-lg">
-        <div class = "p-4">
-            <label class = "p-2 text-lerge text-white text-left h-12 justify-start text-3xl" for ="employeePageHeader">Employee Table</label>
+<div class = "border-gray-100 rounded-lg h-auto dark:border-gray-700 mt-12">
+    <div class = "flex flex-col justify-center border-b h-fit rounded bg-blue-600 dark:bg-gray-800">
+        <div class="flex flex-col px-5 justify-center py-4">
+            <span class="text-xl font-semibold" style="color:white">Employees</span>
+            <span class="text-m" style="color:white">Manage Employees</span>
         </div>
-        <div class = "p-4">
-            <label class = "p-2 text-left text-white w-full h-12" for = "EmpoloyeeManageLabel">Manage employees</label>
-        </div>
+    </div>
+    <div class = "p-2 h-auto rounded-lg">
         <!--Search function and add employees button WIP-->
-        <div class = "bg-white w-full h-32">
-            <button class = "ml-12 mr-12 mt-1 p-2 bg-green-600 rounded-lg h-auto" on:click={handleOpenModalAddEmployees}>Add Record</button>
-            <div class = "grid grid-cols-5 w-full h-auto p-3 gap-4">  
+        <div class = "w-full h-auto">
+            <div class = "grid grid-cols-8 w-full h-auto p-3 gap-4">  
                 <select id="status" bind:value={status} class="bg-gray-50 border border-gray-300 text-lg rounded-md focus:ring-blue-500 focus:border-blue-500 block p-2 m-4 w-32">
                     <option class = "text-black text-sm font-serif" value="all" selected>all</option>
                     <option class = "text-black text-sm font-serif" value="active">Active</option>
                     <option class = "text-black text-sm font-serif" value="inActive">Inactive</option>
                 </select>
-                <form class ="flex-items Center">
-                    <label for = "search" class = "sr-only">search</label>
-                    <div class = "flex relative w-full">
-                        <div class ="aboslute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
-                            <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" ><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                <button class = "p-3 m-4 bg-green-600 rounded-lg h-12 w-32" on:click={handleOpenModalAddEmployees}>Add Record</button>
+                <div class = " col-start-7 col-span-2 rounded">
+                    <form class ="mt-5 flex items-center">
+                        <label for = "search" class = "sr-only">search</label>
+                        <div class = "flex relative w-full">
+                            <input type="search" bind:value={search} id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required>
                         </div>
-                        <input type="search" bind:value={search} id="search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required>
-                    </div>
-                </form>
-                <div></div>
-                <div></div>
-                <div></div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
     <!--Employee Table-->
-    <div class = "p-3 mt-3 bg-blue-600 h-fit rounded-lg">
+    <div class = "flex items-center justify-center h-fit mb-1 rounded-lg bg-gray-50 dark:bg-gray-800">
         <div class = "grow p-2">
             <div class = "p-3 text-2xl font-mono">Employee list</div>
             <table class = "p-4 w-full bg-slate-100 border-b-2 border-black rounded-m border-seperate text-left overflow-auto">
@@ -187,7 +186,7 @@
                         <td class="flex items-center px-6 py-4">
                             <div class="text-sm font-medium">{employees.emp_div}</div>
                         </td>
-                        <td class="flex items-center px-6 py-4">
+                        <td class="flex items-left px-6 py-4">
                             <div class="text-sm font-medium">{employees.emp_email}</div>
                         </td>
                         <td class="flex items-center px-6 py-4">
@@ -203,14 +202,14 @@
                         <td class="flex items-center px-6 py-4">
                             <button
                             class="mx-1 pl-4 inline-flex items-center text-center font-serif rounded-lg text-sm bg-blue-600" on:click={handleOPenModalUpdateEmployees}>Update</button>
-                            <button class = "pl-2 text-sm bg-red-600 rounded-lg">Delete</button>
+                            <button class = "pl-2 text-sm bg-red-600 rounded-lg" on:click={handleOpenModalDeleteEmployees}>Delete</button>
                         </td>
                     </tr>
                     {/each}
                     {/if}
                     {/key}    
                 </tbody>
-                <div class = "flex flex=col items-center mt-2">
+                <div class = "flex flex=col items-center mt-4">
                     <span class="text-sm text-gray-700 dark:text-gray-400">
                         Showing <span class="font-semibold text-gray-900 dark:text-white">{pageMinIndex}</span> to <span class="font-semibold text-gray-900 dark:text-white">{pageMaxIndex}</span> of <span class="font-semibold text-gray-900 dark:text-white">{itemSize}</span> Entries
                      </span>
@@ -241,5 +240,8 @@
 {#if currentEmployeeExists}
  {#if isUpdateEmployeeModalopen}
     <UpdateEmployeeForm bind:isUpdateEmployeeModalopen bind:currentEmployee title = "Update Employee" {loadEmployees}/>
+ {/if}
+ {#if isDeleteEmployeeModalOpen}
+    <DeleteEmployeeform bind:isDeleteEmployeeModalOpen bind:currentEmployee {loadEmployees}/>
  {/if}
 {/if}
