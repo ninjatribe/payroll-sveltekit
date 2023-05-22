@@ -8,20 +8,24 @@
 	export let currentLoan;
 	export let loadLoan = () => {};
 
-	let code = '',
-		description = '',
-		comments = ''
+	let _id = '';
+	let code = '';
+	let description = '';
+	let comments = '';
 		
 
 	function setEditValues() {
 		if (currentLoan === undefined) {
 			currentLoan = [
+				
+				{ _id: 'NA' },
 				{ code: 'NA' },
 				{ description: 'NA' },
 				{ comments: 'NA' }
 				
 			];
 		}
+		_id = currentLoan._id;
 		code = currentLoan.code;
 		description = currentLoan.description;
 		comments = currentLoan.comments;
@@ -31,9 +35,6 @@
 	const handleCloseForm = () => (isEditLoanOpen = false);
 
 	async function handleSubmit(event) {
-		console.log(code);
-		console.log(description);
-		console.log(comments);
 		event?.preventDefault();
 		const response = await fetch('/api/admin/loan/update', {
 			method: 'POST',
@@ -41,14 +42,19 @@
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
+				_id,
 				code,
 				description,
 				comments
 				
 			})
 		});
-		let result = await response.json();
-		isEditLoanOpen = false;
+		const result = await response.json();
+		if (result.error) {
+			error = alert(result.errorMessage) || 'An error occured';
+		} else {
+			isEditLoanOpen = false;
+		}
 		if (result.status === 'Success') {
 			loadLoan();
 		}
@@ -119,6 +125,7 @@
                                     textColor="text-white" 
                                     bgColor="bg-blue-700" 
                                     bgColorHover="bg-blue-800"
+	
                                     >
                                     <svg class="w-5 h-5 mr-1 dark:text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path></svg>
                                     Add

@@ -32,10 +32,13 @@
 				dbfiling
 			})
 		});
-		let result = await response.json();
-		isLeaveFormOpen = false;
+		const result = await response.json();
+		if (result.error) {
+			error = alert(result.errorMessage) || 'An error occured';
+		} else {
+			isLeaveFormOpen = false;
+		}
 		if (result.status === 'Success') {
-			console.log('Success');
 			loadLeave();
 		}
 	}
