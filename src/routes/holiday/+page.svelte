@@ -7,6 +7,8 @@
 	import EditHolidayForm from '$lib/components/forms/holidays/EditHolidayForm.svelte';
 	import DeleteHolidayForm from '$lib/components/forms/holidays/DeleteHolidayForm.svelte';
 	import { formatDateMDY, months } from '$lib/utils/dateHelper';
+	import PaginationButton from '$lib/components/reusable/PaginationButton.svelte';
+	import Sort from "$lib/components/reusable/Sort.svelte";
 
 	let status = 'all';
 	let month = 'all';
@@ -229,94 +231,27 @@
 			</div>
 		</div>
 	</div>
-	<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+	<div class="flex flex-col relative overflow-x-auto shadow-md sm:rounded-lg">
 		<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 			<thead class="text-m  text-gray-700 border-b bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
-				<tr class="grid grid-cols-8 ">
-					<th scope="col" class="pl-6 py-3 flex">
-						DATE <button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => sortColumn('date')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button></th
-					>
-					<th scope="col" class="pl-6 py-3 col-span-2 flex">
+				<tr>
+					<th scope="col" class="pl-6 py-3">
+						DATE
+						<Sort on:click={() => sortColumn('date')}/>
+						</th>
+					<th scope="col" class="pl-6 py-3">
 						DESCRIPTION
-						<button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => sortColumn('description')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button>
+						<Sort on:click={() => sortColumn('description')}/>
 					</th>
-					<th scope="col" class="pl-6 py-3 col-span-2 flex">
+					<th scope="col" class="pl-6 py-3">
 						HOLIDAY TYPE
-						<button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => sortColumn('holidayType')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button>
+						<Sort on:click={() => sortColumn('holidayType')}/>
 					</th>
-					<th scope="col" class="pl-6 py-3 flex">
-						STATUS <button
-							type="button"
-							class="text-gray-400 justify-end bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-							on:click={() => sortColumn('status')}
-						>
-							<svg
-								fill="currentColor"
-								class="w-5 h-5 dark:text-gray-400"
-								viewBox="0 0 24 24"
-								aria-hidden="true"
-							>
-								<path
-									clip-rule="evenodd"
-									fill-rule="evenodd"
-									d="M6.97 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06L8.25 4.81V16.5a.75.75 0 01-1.5 0V4.81L3.53 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zm9.53 4.28a.75.75 0 01.75.75v11.69l3.22-3.22a.75.75 0 111.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V7.5a.75.75 0 01.75-.75z"
-								/>
-							</svg>
-						</button></th
-					>
-					<th scope="col" class="pl-6 py-3 flex"> ACTION </th>
-					<th scope="col" class="px-6 py-3 col-span-auto">
+					<th scope="col" class="pl-6 py-3">
+						STATUS 
+						<Sort on:click={() => sortColumn('status')}/>
+						</th>
+					<th scope="col" class="px-6 py-3">
 						<div class="flex items-center justify-end ">
 							<label for="items" class="block text-m font-semibold text-gray-900 dark:text-white"
 								>Show</label
@@ -341,7 +276,7 @@
 					{#if paginatedItems.length}
 						{#each paginatedItems as holiday}
 							<tr
-								class="grid grid-cols-8 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+								class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
 								on:mouseenter={() => {
 									if (currentHoliday !== holiday) {
 										currentHoliday = holiday;
@@ -350,17 +285,17 @@
 							>
 								<th
 									scope="row"
-									class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+									class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
 								>
 									<div class="text-m font-medium">{formatDateMDY(holiday.date)}</div>
 								</th>
-								<td class="flex items-center px-6 py-4 col-span-2">
+								<td class="px-6 py-4">
 									<div class="text-m text-gray-700 font-medium">{holiday.description}</div>
 								</td>
-								<td class="flex items-center px-6 py-4 col-span-2">
+								<td class="px-6 py-4">
 									<div class="text-m text-gray-700 font-medium">{holiday.holidayType}</div>
 								</td>
-								<td class="flex items-center px-6 py-4">
+								<td class="px-6 py-4">
 									<div class="flex items-center ">
 										<div
 											class={holiday.status
@@ -372,8 +307,7 @@
 										</div>
 									</div>
 								</td>
-
-								<td class="px-3 py-3 col-span-2">
+								<td class="px-3 py-3">
 									<Button
 										extraClasses="mx-1 pr-4 pl-4 inline-flex items-center text-center font-semibold rounded-full"
 										hoverTitle="Edit"
@@ -424,42 +358,18 @@
 					{/if}
 				{/key}
 			</tbody>
-			<div class="flex flex-col items-center mt-2">
-				<span class="text-sm text-gray-700 dark:text-gray-400">
-					Showing <span class="font-semibold text-gray-900 dark:text-white">{pageMinIndex}</span> to
-					<span class="font-semibold text-gray-900 dark:text-white">{pageMaxIndex}</span>
-					of <span class="font-semibold text-gray-900 dark:text-white">{itemSize}</span> Entries
-				</span>
-				<div class="inline-flex mt-2 xs:mt-0">
-					<button
-						on:click={decrementPageNumber}
-						class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-					>
-						<svg aria-hidden="true" class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-							<path
-								fill-rule="evenodd"
-								d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z"
-								clip-rule="evenodd"
-							/>
-						</svg>
-						Prev
-					</button>
-					<button
-						on:click={incrementPageNumber}
-						class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 border-0 border-l border-gray-700 rounded-r hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-					>
-						Next
-						<svg aria-hidden="true" class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20">
-							<path
-								fill-rule="evenodd"
-								d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-								clip-rule="evenodd"
-							/>
-						</svg>
-					</button>
-				</div>
-			</div>
 		</table>
+		<div class="flex flex-col items-center mt-2">
+			<span class="text-sm text-gray-700 dark:text-gray-400">
+				Showing <span class="font-semibold text-gray-900 dark:text-white">{pageMinIndex}</span> to
+				<span class="font-semibold text-gray-900 dark:text-white">{pageMaxIndex}</span>
+				of <span class="font-semibold text-gray-900 dark:text-white">{itemSize}</span> Entries
+			</span>
+			<div class="inline-flex mt-2 xs:mt-0">
+				<PaginationButton isPrev={true} on:click={decrementPageNumber}/>
+				<PaginationButton on:click={incrementPageNumber}/>
+			</div>
+		</div>
 	</div>
 </div>
 
