@@ -6,6 +6,7 @@
 	import EditDivisionForm from '$lib/components/forms/divisions/EditDivisionForm.svelte';
 	import ConfirmDeleteDivision from '$lib/components/forms/divisions/ConfirmDeleteDivision.svelte';
 	import Button from '$lib/components/reusable/Button.svelte';
+	import PaginationButton from '$lib/components/reusable/PaginationButton.svelte';
 
 	let status = 'all';
 	let search;
@@ -190,11 +191,11 @@
 			</div>
 		</div>
 	</div>
-	<div class="flex items-center justify-center h-fit mb-1 rounded bg-gray-50 dark:bg-gray-800">
+	<div class="flex flex-col items-center justify-center h-fit mb-1 rounded bg-gray-50 dark:bg-gray-800">
 		<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 			<thead class="text-m  text-gray-700 border-b bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
-				<tr class="grid grid-cols-8 ">
-					<th scope="col" class="pl-6 py-3 flex">
+				<tr>
+					<th scope="col" class="pl-6 py-3">
 						CODE
 						<button
 							type="button"
@@ -215,7 +216,7 @@
 							</svg>
 						</button>
 					</th>
-					<th scope="col" class="pl-6 py-3 col-span-3 flex">
+					<th scope="col" class="pl-6 py-3">
 						DESCRIPTION
 						<button
 							type="button"
@@ -236,8 +237,8 @@
 							</svg>
 						</button>
 					</th>
-					<th scope="col" class="pl-6 py-3 flex"> STATUS </th>
-					<th scope="col" class="px-6 py-3 col-span-3">
+					<th scope="col" class="pl-6 py-3"> STATUS </th>
+					<th scope="col" class="px-6 py-3">
 						<div class="flex items-center justify-end ">
 							<label for="items" class="block text-m font-semibold text-gray-900 dark:text-white"
 								>Show</label
@@ -262,7 +263,7 @@
 					{#if paginatedItems.length}
 						{#each paginatedItems as division}
 							<tr
-								class="grid grid-cols-8 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+								class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
 								on:mouseenter={() => {
 									if (currentDivision !== division) {
 										currentDivision = division;
@@ -271,11 +272,11 @@
 							>
 								<th
 									scope="row"
-									class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+									class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
 								>
 									<div class="text-m font-medium">{division.code}</div>
 								</th>
-								<td class="flex items-center px-6 py-4 col-span-3">
+								<td class="px-6 py-4 ">
 									<div class="text-m text-gray-700 font-medium">{division.description}</div>
 								</td>
 								<td class="flex items-center px-6 py-4">
@@ -291,7 +292,7 @@
 									</div>
 								</td>
 
-								<td class="px-6 py-4 col-span-3">
+								<td class="px-6 py-4">
 									<Button
 										extraClasses="mx-1 pr-4 pl-4 inline-flex items-center text-center font-semibold rounded-full"
 										textSize="text-m"
@@ -343,42 +344,18 @@
 					{/if}
 				{/key}
 			</tbody>
-			<div class="flex flex-col items-center mt-2">
-				<span class="text-sm text-gray-700 dark:text-gray-400">
-					Showing <span class="font-semibold text-gray-900 dark:text-white">{pageMinIndex}</span> to
-					<span class="font-semibold text-gray-900 dark:text-white">{pageMaxIndex}</span>
-					of <span class="font-semibold text-gray-900 dark:text-white">{itemSize}</span> Entries
-				</span>
-				<div class="inline-flex mt-2 xs:mt-0">
-					<button
-						on:click={decrementPageNumber}
-						class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-					>
-						<svg aria-hidden="true" class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-							<path
-								fill-rule="evenodd"
-								d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z"
-								clip-rule="evenodd"
-							/>
-						</svg>
-						Prev
-					</button>
-					<button
-						on:click={incrementPageNumber}
-						class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 border-0 border-l border-gray-700 rounded-r hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-					>
-						Next
-						<svg aria-hidden="true" class="w-5 h-5 ml-2" fill="currentColor" viewBox="0 0 20 20">
-							<path
-								fill-rule="evenodd"
-								d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-								clip-rule="evenodd"
-							/>
-						</svg>
-					</button>
-				</div>
-			</div>
 		</table>
+		<div class="flex flex-col items-center mt-2">
+			<span class="text-sm text-gray-700 dark:text-gray-400">
+				Showing <span class="font-semibold text-gray-900 dark:text-white">{pageMinIndex}</span> to
+				<span class="font-semibold text-gray-900 dark:text-white">{pageMaxIndex}</span>
+				of <span class="font-semibold text-gray-900 dark:text-white">{itemSize}</span> Entries
+			</span>
+			<div class="inline-flex mt-2 xs:mt-0">
+				<PaginationButton isPrev={true} on:click={decrementPageNumber}/>
+				<PaginationButton on:click={incrementPageNumber}/>
+			</div>
+		</div>
 	</div>
 </div>
 
